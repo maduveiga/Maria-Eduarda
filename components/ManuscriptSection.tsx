@@ -301,29 +301,49 @@ export default function ManuscriptSection() {
                   }}
                 />
 
-                <h2
-                  style={{
-                    fontFamily: "var(--font-cormorant)",
-                    fontSize: "clamp(1.5rem, 2.8vw, 2.4rem)",
-                    fontWeight: 300,
-                    fontStyle: "italic",
-                    lineHeight: 1.4,
-                    color: "rgba(240, 240, 240, 0.92)",
-                    margin: 0,
-                    letterSpacing: "0.01em",
-                    opacity: textOpacity,
-                    filter: `blur(${textBlur}px)`,
-                    transform: `translateY(${textY}px)`,
-                    transition: "opacity 0.05s linear, filter 0.05s linear, transform 0.05s linear",
-                    willChange: "opacity, filter, transform",
-                  }}
-                >
-                  Toda criação começa
-                  <br />
-                  <span style={{ color: "rgba(184, 151, 90, 0.75)" }}>
-                    por uma conexão verdadeira.
-                  </span>
-                </h2>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
+                  <h2
+                    style={{
+                      fontFamily: "var(--font-cormorant)",
+                      fontSize: "clamp(1.5rem, 2.8vw, 2.4rem)",
+                      fontWeight: 300,
+                      fontStyle: "italic",
+                      lineHeight: 1.4,
+                      color: "rgba(240, 240, 240, 0.92)",
+                      margin: 0,
+                      letterSpacing: "0.01em",
+                      opacity: textOpacity,
+                      filter: `blur(${textBlur}px)`,
+                      transform: `translateY(${textY}px)`,
+                      transition: "opacity 0.05s linear, filter 0.05s linear, transform 0.05s linear",
+                      willChange: "opacity, filter, transform",
+                    }}
+                  >
+                    Toda criação começa
+                    <br />
+                    <span style={{ color: "rgba(184, 151, 90, 0.75)" }}>
+                      por uma conexão verdadeira.
+                    </span>
+                  </h2>
+
+                  <p
+                    style={{
+                      fontFamily: "var(--font-inter)",
+                      fontSize: "clamp(0.7rem, 0.8vw, 0.8rem)",
+                      fontWeight: 300,
+                      color: "rgba(240, 240, 240, 0.3)",
+                      letterSpacing: "0.02em",
+                      margin: 0,
+                      opacity: textOpacity,
+                      filter: `blur(${textBlur}px)`,
+                      transform: `translateY(${textY}px)`,
+                      transition: "opacity 0.05s linear, filter 0.05s linear, transform 0.05s linear",
+                      willChange: "opacity, filter, transform",
+                    }}
+                  >
+                    Every creation begins with a true connection.
+                  </p>
+                </div>
 
                 {/* Decorative dot */}
                 <div
