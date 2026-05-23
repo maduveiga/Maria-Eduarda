@@ -1,0 +1,229 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Custom Properties ─────────────────────────────────────────────────── */
+:root {
+  --ease-silk: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-luxury: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --color-black: #000000;
+  --color-deep: #000000;
+  --color-gold: #b8975a;
+  --color-gold-dim: #7a6035;
+  --color-white: #f0f0f0;
+  --color-silver: #888888;
+}
+
+/* ─── Global Reset ───────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto; /* Lenis handles smooth scroll */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--color-black);
+  color: var(--color-white);
+  overflow-x: hidden;
+}
+
+/* ─── Selection ──────────────────────────────────────────────────────────── */
+::selection {
+  background: rgba(184, 151, 90, 0.25);
+  color: #f0f0f0;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 2px;
+}
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold-dim);
+}
+
+/* canvas-container e vignettes removidos — sem manchas no fundo */
+
+/* ─── Atmospheric Grain ─────────────────────────────────────────────────── */
+/* Única camada atmosférica — vignettes e cinema-glow removidos (causavam manchas) */
+.grain-overlay {
+  position: fixed;
+  inset: -200%;
+  width: 400%;
+  height: 400%;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.022;
+  animation: grain 8s steps(10) infinite;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* ─── Typography System ──────────────────────────────────────────────────── */
+.text-display {
+  font-family: var(--font-cormorant);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+}
+
+.text-label {
+  font-family: var(--font-inter);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+}
+
+.text-body-cinema {
+  font-family: var(--font-inter);
+  font-size: 0.9375rem;
+  font-weight: 300;
+  line-height: 1.75;
+  letter-spacing: 0.02em;
+  color: rgba(240, 240, 240, 0.55);
+}
+
+/* ─── Gold Accent Line ───────────────────────────────────────────────────── */
+.gold-line {
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+}
+
+.gold-dot {
+  display: inline-block;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  opacity: 0.7;
+}
+
+/* ─── Section Utilities ──────────────────────────────────────────────────── */
+.cinema-section {
+  position: relative;
+  background: var(--color-black);
+  /* z-index removido — sem canvas fixed, não há sobreposição */
+}
+
+/* ─── Scroll Progress Bar ────────────────────────────────────────────────── */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 1px;
+  z-index: 100;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  transform-origin: left center;
+  transition: transform 0.1s linear;
+}
+
+/* ─── Loading Screen ─────────────────────────────────────────────────────── */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--color-black);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  transition: opacity 0.8s var(--ease-silk), visibility 0.8s;
+}
+
+.loading-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loading-bar-track {
+  width: 120px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.loading-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  border-radius: 1px;
+  transition: width 0.2s var(--ease-luxury);
+}
+
+
+
+/* ─── Keyframes ──────────────────────────────────────────────────────────── */
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10%       { transform: translate(-5%, -10%); }
+  20%       { transform: translate(-15%, 5%); }
+  30%       { transform: translate(7%, -25%); }
+  40%       { transform: translate(-5%, 25%); }
+  50%       { transform: translate(-15%, 10%); }
+  60%       { transform: translate(15%, 0%); }
+  70%       { transform: translate(0%, 15%); }
+  80%       { transform: translate(3%, 35%); }
+  90%       { transform: translate(-10%, 10%); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50%       { transform: translateY(10px); opacity: 0.3; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.shimmer-text {
+  background: linear-gradient(
+    110deg,
+    rgba(184, 151, 90, 0.45) 15%,
+    rgba(255, 235, 180, 0.75) 50%,
+    rgba(184, 151, 90, 0.45) 85%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shimmer 8s linear infinite;
+}
