@@ -107,56 +107,14 @@ export default function ManuscriptSection() {
       aria-label="Conexão — Manuscrito contemporâneo"
       style={{
         position: "relative",
-        background: "#000000",
-        minHeight: "130vh",
-        marginTop: "-40px",
-        overflow: "hidden",
+        background: "transparent",
+        minHeight: "100vh",
+        marginTop: "-60vh",
+        zIndex: 20,
+        pointerEvents: "none", // Let scroll events pass through the empty background
       }}
     >
-      {/* Ambient glow */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          inset: 0,
-          opacity: 0.025,
-          background:
-            "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(184,151,90,0.08) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }}
-      />
-
-      {/* Left illumination */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          top: "10%",
-          left: "-5%",
-          width: "30%",
-          height: "80%",
-          background:
-            "radial-gradient(ellipse at center, rgba(184,151,90,0.018) 0%, transparent 70%)",
-          pointerEvents: "none",
-          filter: "blur(80px)",
-        }}
-      />
-
-      {/* Right illumination */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          top: "15%",
-          right: "-5%",
-          width: "25%",
-          height: "70%",
-          background:
-            "radial-gradient(ellipse at center, rgba(184,151,90,0.012) 0%, transparent 70%)",
-          pointerEvents: "none",
-          filter: "blur(80px)",
-        }}
-      />
+      {/* Left/Right ambient removed to avoid breaking the global overlapping composition */}
 
       {/* Sticky viewport */}
       <div
@@ -165,19 +123,23 @@ export default function ManuscriptSection() {
           top: 0,
           height: "100vh",
           display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "40px clamp(16px, 4vw, 60px)",
+          alignItems: "flex-end", // Push it to bottom to overlap
+          justifyContent: "flex-start", // Push to left for asymmetry
+          padding: "40px clamp(16px, 10vw, 120px)",
+          pointerEvents: "none", // Let container be transparent
         }}
       >
+        {/* Pointer events auto for actual content */}
         {/* ─── The Manuscript — Horizontal / Landscape ─────────────────── */}
         <div
           style={{
             position: "relative",
             width: "100%",
-            maxWidth: "1100px",
+            maxWidth: "960px", // slightly thinner to fit nicely offset
+            marginBottom: "10vh",
             opacity: manuscriptOpacity,
-            transform: `scale(${manuscriptScale})`,
+            pointerEvents: "auto", // Re-enable clicks here
+            transform: `scale(${manuscriptScale}) translateY(${(1 - manuscriptReveal) * 100}px)`,
             transition: "transform 0.1s linear, opacity 0.1s linear",
             willChange: "transform, opacity",
           }}
@@ -187,15 +149,14 @@ export default function ManuscriptSection() {
             style={{
               position: "relative",
               background:
-                "linear-gradient(145deg, #0d0d0d 0%, #111111 30%, #0c0c0c 70%, #0a0a0a 100%)",
-              borderRadius: "4px",
-              padding: "clamp(36px, 4vw, 64px) clamp(32px, 5vw, 80px)",
+                "linear-gradient(135deg, rgba(20,20,20,0.95) 0%, rgba(12,12,12,0.85) 50%, rgba(5,5,5,0.7) 100%)",
+              backdropFilter: "blur(30px)",
+              borderRadius: "2px", // Editorial shape
+              padding: "clamp(36px, 4vw, 64px) clamp(32px, 5vw, 60px)",
               boxShadow: `
-                0 0 0 1px rgba(184,151,90,0.06),
-                0 4px 20px rgba(0,0,0,0.6),
-                0 20px 60px rgba(0,0,0,0.4),
-                0 40px 100px rgba(0,0,0,0.3),
-                inset 0 1px 0 rgba(184,151,90,0.04)
+                0 0 0 1px rgba(184,151,90,0.1),
+                0 40px 100px -20px rgba(0,0,0,1),
+                inset 0 1px 0 rgba(255,255,255,0.05)
               `,
               overflow: "hidden",
             }}
