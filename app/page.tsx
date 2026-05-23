@@ -5,20 +5,12 @@ import HeroScrollSequence from "@/components/HeroScrollSequence";
 import PortfolioExperience from "@/components/PortfolioExperience";
 import CreativeSignature from "@/components/CreativeSignature";
 import ManuscriptSection from "@/components/ManuscriptSection";
-import PremiumSection from "@/components/PremiumSection";
 import FooterCTA from "@/components/FooterCTA";
 
 /**
  * Page — root of the MADU cinematic experience.
- *
- * Structure:
- * A. HeroScrollSequence  — 500vh sticky cinematic frame sequence
- * B. IntroSection        — brand statement
- * C. PremiumSection      — concept / technology showcase
- * D. FooterCTA           — closing call-to-action
  */
 export default function Page() {
-  // Initialize Lenis smooth scroll globally
   useLenisScroll();
 
   return (
@@ -33,17 +25,13 @@ export default function Page() {
       {/* B — Creative Identity & Human Pause */}
       <CreativeSignature />
 
-      {/* B.5 — Contemporary Manuscript — Contact & Connection */}
+      {/* C — Contemporary Manuscript — Contact & Connection */}
       <ManuscriptSection />
 
-      {/* C — Portfolio cinematic showcase */}
+      {/* D — Portfolio cinematic showcase */}
       <PortfolioExperience />
 
-
-      {/* E — Technology concept */}
-      <PremiumSection />
-
-      {/* D — Closing CTA */}
+      {/* E — Closing CTA */}
       <FooterCTA />
     </main>
   );
