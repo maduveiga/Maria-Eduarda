@@ -44,29 +44,29 @@ const CONTACTS = [
 export default function ManuscriptSection() {
   const containerRef = useRef<HTMLElement>(null);
   
+  // Using "start start" to "end end" ensures the 0-1 range matches the sticky phase perfectly
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end start"],
+    offset: ["start start", "end end"],
   });
 
   const scrollProgress = useSpring(scrollYProgress, {
-    stiffness: 80, // More responsive for direct control
-    damping: 35
+    stiffness: 100, // Very responsive
+    damping: 40
   });
 
-  // Animation values - Direct Timeline Control
-  const globeOpacity = useTransform(scrollProgress, [0, 0.08], [0, 1]);
+  // Animation values - Cinema Timeline
+  const globeOpacity = useTransform(scrollProgress, [0, 0.05], [0, 1]);
   const atmosphereOpacity = useTransform(scrollProgress, [0, 0.1], [0, 1]);
 
-  // Phase 1: The Focal Phrase
-  const phraseOpacity = useTransform(scrollProgress, [0.08, 0.2, 0.35, 0.45], [0, 1, 1, 0]);
-  const phraseY = useTransform(scrollProgress, [0.08, 0.2], [40, 0]);
-  const phraseBlur = useTransform(scrollProgress, [0.08, 0.2], ["15px", "0px"]);
+  // Phase 1: The Focal Phrase (stays longer)
+  const phraseOpacity = useTransform(scrollProgress, [0.05, 0.15, 0.35, 0.45], [0, 1, 1, 0]);
+  const phraseY = useTransform(scrollProgress, [0.05, 0.15], [30, 0]);
 
-  // Phase 2: Sequential Contacts (Revealed by Scroll)
-  const c1Opacity = useTransform(scrollProgress, [0.48, 0.55, 0.65, 0.7], [0, 1, 1, 0]);
-  const c2Opacity = useTransform(scrollProgress, [0.7, 0.77, 0.82, 0.85], [0, 1, 1, 0]);
-  const c3Opacity = useTransform(scrollProgress, [0.85, 0.92, 0.98, 1.0], [0, 1, 1, 0]);
+  // Phase 2: Staggered Contacts (Revealed through the long scroll)
+  const c1Opacity = useTransform(scrollProgress, [0.48, 0.55, 0.65, 0.70], [0, 1, 1, 0]);
+  const c2Opacity = useTransform(scrollProgress, [0.70, 0.77, 0.87, 0.92], [0, 1, 1, 0]);
+  const c3Opacity = useTransform(scrollProgress, [0.92, 0.96, 0.99, 1.00], [0, 1, 1, 1]); // Stays till end
 
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
@@ -86,9 +86,9 @@ export default function ManuscriptSection() {
       style={{
         position: "relative",
         background: "#000000",
-        minHeight: "800vh", // Deep timeline
+        minHeight: "700vh", // Deep cinematic scroll depth
         marginTop: "-2px",
-        overflow: "hidden",
+        overflow: "visible", // Critical for sticky to work correctly without clipping
       }}
     >
       <div
@@ -101,9 +101,10 @@ export default function ManuscriptSection() {
           alignItems: "center",
           justifyContent: "center",
           zIndex: 1,
+          overflow: "hidden", // We clip only the sticky div content
         }}
       >
-        {/* The Globe - 100% Scroll Managed */}
+        {/* The Globe */}
         <motion.div
           style={{
             opacity: globeOpacity,
@@ -122,26 +123,25 @@ export default function ManuscriptSection() {
           />
         </motion.div>
 
-        {/* Atmosphere Gradient */}
+        {/* Atmosphere Overlay */}
         <motion.div
           style={{
             position: "absolute",
             inset: 0,
             opacity: atmosphereOpacity,
-            background: "radial-gradient(circle at 50% 50%, rgba(184,151,90,0.06) 0%, transparent 80%)",
+            background: "radial-gradient(circle at 50% 50%, rgba(184,151,90,0.08) 0%, transparent 85%)",
             pointerEvents: "none",
           }}
         />
 
-        {/* Cinematic Content Layer */}
+        {/* Content Stages */}
         <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 24px" }}>
           
-          {/* THE PHRASE - RESTORED COMPOSITION */}
+          {/* STAGE 1: Focal Phrase */}
           <motion.div
             style={{
               opacity: phraseOpacity,
               y: phraseY,
-              filter: phraseBlur,
               textAlign: "center",
               maxWidth: "900px",
               position: "absolute",
@@ -154,25 +154,17 @@ export default function ManuscriptSection() {
               fontWeight: 300, 
               color: "#fff", 
               margin: 0,
-              lineHeight: 1.1,
-              letterSpacing: "-0.02em"
+              lineHeight: 1.15,
             }}>
               Toda criação começa
               <br />
-              <span style={{ color: "rgba(184,151,90,0.85)", fontStyle: "italic" }}>
+              <span style={{ color: "rgba(184,151,90,0.9)", fontStyle: "italic" }}>
                 por uma conexão verdadeira.
               </span>
             </h2>
-            <div style={{ 
-              marginTop: "32px", 
-              height: "1px", 
-              width: "120px", 
-              marginInline: "auto",
-              background: "linear-gradient(90deg, transparent, rgba(184,151,90,0.4), transparent)"
-            }} />
           </motion.div>
 
-          {/* THE CONTACTS - SEQUENTIAL REVEAL */}
+          {/* STAGE 2: Contacts Sequential Reveal */}
           <div style={{ position: "absolute", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
             {[
               { ...CONTACTS[0], opacity: c1Opacity },
@@ -196,14 +188,13 @@ export default function ManuscriptSection() {
                 }}
               >
                 <div style={{ 
-                  padding: "20px", 
+                  padding: "24px", 
                   borderRadius: "50%", 
                   border: "1px solid rgba(184,151,90,0.3)", 
                   background: "rgba(0,0,0,0.5)",
                   display: "flex", 
                   alignItems: "center", 
                   justifyContent: "center",
-                  boxShadow: "0 20px 40px rgba(0,0,0,0.4)"
                 }}>
                   {contact.icon}
                 </div>
@@ -212,7 +203,7 @@ export default function ManuscriptSection() {
                     display: "block", 
                     fontSize: "12px", 
                     textTransform: "uppercase", 
-                    letterSpacing: "0.45em", 
+                    letterSpacing: "0.5em", 
                     color: "rgba(184,151,90,0.7)", 
                     marginBottom: "12px" 
                   }}>
@@ -220,7 +211,7 @@ export default function ManuscriptSection() {
                   </span>
                   <span style={{ 
                     fontFamily: "var(--font-cormorant)", 
-                    fontSize: "clamp(1.5rem, 3vw, 2.8rem)", 
+                    fontSize: "clamp(1.8rem, 4vw, 3.2rem)", 
                     fontWeight: 300, 
                     color: "#fff" 
                   }}>
