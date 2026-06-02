@@ -50,25 +50,24 @@ export default function ManuscriptSection() {
   });
 
   const scrollProgress = useSpring(scrollYProgress, {
-    stiffness: 60,
-    damping: 30
+    stiffness: 80, // More responsive for direct control
+    damping: 35
   });
 
-  // Animation values - Cinema Narrative (0 to 1.0)
-  const globeOpacity = useTransform(scrollProgress, [0, 0.05], [0, 1]);
+  // Animation values - Direct Timeline Control
+  const globeOpacity = useTransform(scrollProgress, [0, 0.08], [0, 1]);
   const atmosphereOpacity = useTransform(scrollProgress, [0, 0.1], [0, 1]);
 
-  // Phase 1: The Phrase (0.05 to 0.3)
-  const textOpacity = useTransform(scrollProgress, [0.05, 0.15, 0.3, 0.4], [0, 1, 1, 0]);
-  const textY = useTransform(scrollProgress, [0.05, 0.15], [30, 0]);
-  const textBlur = useTransform(scrollProgress, [0.05, 0.15], ["10px", "0px"]);
+  // Phase 1: The Focal Phrase
+  const phraseOpacity = useTransform(scrollProgress, [0.08, 0.2, 0.35, 0.45], [0, 1, 1, 0]);
+  const phraseY = useTransform(scrollProgress, [0.08, 0.2], [40, 0]);
+  const phraseBlur = useTransform(scrollProgress, [0.08, 0.2], ["15px", "0px"]);
 
-  // Staggered Contacts revealed one by one with the rotation
-  const contact1Opacity = useTransform(scrollProgress, [0.4, 0.45, 0.55, 0.6], [0, 1, 1, 0]);
-  const contact2Opacity = useTransform(scrollProgress, [0.6, 0.65, 0.75, 0.8], [0, 1, 1, 0]);
-  const contact3Opacity = useTransform(scrollProgress, [0.8, 0.85, 0.95, 1.0], [0, 1, 1, 0]);
+  // Phase 2: Sequential Contacts (Revealed by Scroll)
+  const c1Opacity = useTransform(scrollProgress, [0.48, 0.55, 0.65, 0.7], [0, 1, 1, 0]);
+  const c2Opacity = useTransform(scrollProgress, [0.7, 0.77, 0.82, 0.85], [0, 1, 1, 0]);
+  const c3Opacity = useTransform(scrollProgress, [0.85, 0.92, 0.98, 1.0], [0, 1, 1, 0]);
 
-  // Responsive logic
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
@@ -87,7 +86,7 @@ export default function ManuscriptSection() {
       style={{
         position: "relative",
         background: "#000000",
-        minHeight: "800vh", // Deep cinematic narrative
+        minHeight: "800vh", // Deep timeline
         marginTop: "-2px",
         overflow: "hidden",
       }}
@@ -104,7 +103,7 @@ export default function ManuscriptSection() {
           zIndex: 1,
         }}
       >
-        {/* The Globe Background */}
+        {/* The Globe - 100% Scroll Managed */}
         <motion.div
           style={{
             opacity: globeOpacity,
@@ -123,46 +122,62 @@ export default function ManuscriptSection() {
           />
         </motion.div>
 
-        {/* Atmosphere Overlay (Cinematic Glow) */}
+        {/* Atmosphere Gradient */}
         <motion.div
           style={{
             position: "absolute",
             inset: 0,
             opacity: atmosphereOpacity,
-            background: "radial-gradient(circle at 50% 50%, rgba(184,151,90,0.04) 0%, transparent 75%)",
+            background: "radial-gradient(circle at 50% 50%, rgba(184,151,90,0.06) 0%, transparent 80%)",
             pointerEvents: "none",
           }}
         />
 
-        {/* Narrative Flow Container */}
-        <div style={{ position: "relative", textAlign: "center", width: "100%", maxWidth: "900px", zIndex: 10 }}>
+        {/* Cinematic Content Layer */}
+        <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 24px" }}>
           
-          {/* Phase 1: Intro Text */}
+          {/* THE PHRASE - RESTORED COMPOSITION */}
           <motion.div
             style={{
-              opacity: textOpacity,
-              filter: textBlur,
-              y: textY,
+              opacity: phraseOpacity,
+              y: phraseY,
+              filter: phraseBlur,
+              textAlign: "center",
+              maxWidth: "900px",
               position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "100%",
+              zIndex: 10
             }}
           >
-            <h2 style={{ fontFamily: "var(--font-cormorant)", fontSize: "clamp(2.5rem, 5vw, 4.5rem)", fontWeight: 300, color: "#fff", margin: 0 }}>
+            <h2 style={{ 
+              fontFamily: "var(--font-cormorant)", 
+              fontSize: "clamp(2.5rem, 6vw, 5rem)", 
+              fontWeight: 300, 
+              color: "#fff", 
+              margin: 0,
+              lineHeight: 1.1,
+              letterSpacing: "-0.02em"
+            }}>
               Toda criação começa
               <br />
-              <span style={{ color: "rgba(184,151,90,0.8)", fontStyle: "italic" }}>por uma conexão verdadeira.</span>
+              <span style={{ color: "rgba(184,151,90,0.85)", fontStyle: "italic" }}>
+                por uma conexão verdadeira.
+              </span>
             </h2>
+            <div style={{ 
+              marginTop: "32px", 
+              height: "1px", 
+              width: "120px", 
+              marginInline: "auto",
+              background: "linear-gradient(90deg, transparent, rgba(184,151,90,0.4), transparent)"
+            }} />
           </motion.div>
 
-          {/* Phase 2: Sequential Contacts */}
-          <div style={{ position: "relative", height: "300px", width: "100%" }}>
+          {/* THE CONTACTS - SEQUENTIAL REVEAL */}
+          <div style={{ position: "absolute", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
             {[
-              { ...CONTACTS[0], opacity: contact1Opacity },
-              { ...CONTACTS[1], opacity: contact2Opacity },
-              { ...CONTACTS[2], opacity: contact3Opacity },
+              { ...CONTACTS[0], opacity: c1Opacity },
+              { ...CONTACTS[1], opacity: c2Opacity },
+              { ...CONTACTS[2], opacity: c3Opacity },
             ].map((contact, i) => (
               <motion.a
                 key={contact.label}
@@ -172,30 +187,50 @@ export default function ManuscriptSection() {
                 style={{
                   opacity: contact.opacity,
                   position: "absolute",
-                  inset: 0,
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  justifyContent: "center",
-                  gap: "16px",
+                  gap: "24px",
                   textDecoration: "none",
-                  pointerEvents: i === 0 ? "auto" : "none", // Avoid overlap click issues
+                  pointerEvents: "auto",
                 }}
               >
-                <div style={{ padding: "24px", borderRadius: "50%", border: "1px solid rgba(184,151,90,0.25)", background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div style={{ 
+                  padding: "20px", 
+                  borderRadius: "50%", 
+                  border: "1px solid rgba(184,151,90,0.3)", 
+                  background: "rgba(0,0,0,0.5)",
+                  display: "flex", 
+                  alignItems: "center", 
+                  justifyContent: "center",
+                  boxShadow: "0 20px 40px rgba(0,0,0,0.4)"
+                }}>
                   {contact.icon}
                 </div>
                 <div style={{ textAlign: "center" }}>
-                  <span style={{ display: "block", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.4em", color: "rgba(184,151,90,0.6)", marginBottom: "8px" }}>
+                  <span style={{ 
+                    display: "block", 
+                    fontSize: "12px", 
+                    textTransform: "uppercase", 
+                    letterSpacing: "0.45em", 
+                    color: "rgba(184,151,90,0.7)", 
+                    marginBottom: "12px" 
+                  }}>
                     {contact.label}
                   </span>
-                  <span style={{ fontFamily: "var(--font-cormorant)", fontSize: "2.2rem", fontWeight: 300, color: "#fff" }}>
+                  <span style={{ 
+                    fontFamily: "var(--font-cormorant)", 
+                    fontSize: "clamp(1.5rem, 3vw, 2.8rem)", 
+                    fontWeight: 300, 
+                    color: "#fff" 
+                  }}>
                     {contact.value}
                   </span>
                 </div>
               </motion.a>
             ))}
           </div>
+
         </div>
       </div>
     </section>

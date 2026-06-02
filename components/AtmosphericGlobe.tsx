@@ -192,9 +192,9 @@ export default function AtmosphericGlobe({
 
     const timer = d3.timer((elapsed) => {
       const currentScroll = typeof scrollProgress === "number" ? scrollProgress : scrollProgress.get();
-      const autoRot = elapsed * 0.05;
-      const scrollRot = currentScroll * 360 * 5; 
-      projection.rotate([autoRot + scrollRot, -15]);
+      // 100% scroll-driven rotation - NO automatic movement
+      const scrollRot = currentScroll * 360 * 2.5; 
+      projection.rotate([scrollRot, -15]);
       render(elapsed, currentScroll);
     });
 
