@@ -449,6 +449,23 @@ export default function CreativeSignature() {
             >
               Posicionamento & Estratégia Digital
             </motion.span>
+
+            {/* Specialties line */}
+            <motion.span
+              variants={{ hovered: { color: "rgba(255,255,255,0.5)" } }}
+              transition={{ duration: 0.6 }}
+              style={{
+                fontFamily: "var(--font-inter)",
+                fontSize: "clamp(8px, 0.8vw, 10px)",
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                color: "rgba(255,255,255,0.2)",
+                fontWeight: 300,
+                marginTop: "4px"
+              }}
+            >
+              Estratégia · Conteúdo · Design · Copywriting · Social Media · Desenvolvimento Web · Vídeo · IA Aplicada à Criação
+            </motion.span>
           </motion.div>
         </motion.div>
       </div>
