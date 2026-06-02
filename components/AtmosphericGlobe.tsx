@@ -11,6 +11,12 @@ interface AtmosphericGlobeProps {
   scrollProgress?: number | any;
 }
 
+const CONTACT_MARKERS = [
+  { lng: -140, lat: -15, label: "WhatsApp", value: "+55 (47) 98919-2263" },
+  { lng: -35, lat: 25, label: "E-mail", value: "madu.oficial@outlook.com" },
+  { lng: 75, lat: -15, label: "Instagram", value: "@m4du.oficial" },
+];
+
 export default function AtmosphericGlobe({
   width = 800,
   height = 800,
@@ -22,7 +28,6 @@ export default function AtmosphericGlobe({
   const [landData, setLandData] = useState<any>(null);
 
   useEffect(() => {
-    // Fetch data once
     fetch("https://raw.githubusercontent.com/martynafford/natural-earth-geojson/refs/heads/master/110m/physical/ne_110m_land.json")
       .then(res => res.json())
       .then(data => setLandData(data))
@@ -38,7 +43,7 @@ export default function AtmosphericGlobe({
 
     const containerWidth = width;
     const containerHeight = height;
-    const radius = Math.min(containerWidth, containerHeight) / 2.2;
+    const radius = Math.min(containerWidth, containerHeight) / 2.3;
 
     const dpr = window.devicePixelRatio || 1;
     canvas.width = containerWidth * dpr;
@@ -54,69 +59,28 @@ export default function AtmosphericGlobe({
 
     const path = d3.geoPath().projection(projection).context(context);
 
-    // Helpers for dots
-    const pointInPolygon = (point: [number, number], polygon: number[][]): boolean => {
-      const [x, y] = point;
-      let inside = false;
-      for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-        const [xi, yi] = polygon[i];
-        const [xj, yj] = polygon[j];
-        if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) {
-          inside = !inside;
-        }
-      }
-      return inside;
-    };
-
-    const pointInFeature = (point: [number, number], feature: any): boolean => {
-      const geometry = feature.geometry;
-      if (geometry.type === "Polygon") {
-        return pointInPolygon(point, geometry.coordinates[0]);
-      } else if (geometry.type === "MultiPolygon") {
-        return geometry.coordinates.some((poly: any) => pointInPolygon(point, poly[0]));
-      }
-      return false;
-    };
-
-    // Pre-calculate dots for performance
-    const allDots: { lng: number; lat: number }[] = [];
-    const dotSpacing = 16;
-    const stepSize = dotSpacing * 0.12; // Adjusted for density
-
-    landData.features.forEach((feature: any) => {
-      const bounds = d3.geoBounds(feature);
-      const [[minLng, minLat], [maxLng, maxLat]] = bounds;
-      for (let lng = minLng; lng <= maxLng; lng += stepSize) {
-        for (let lat = minLat; lat <= maxLat; lat += stepSize) {
-          if (pointInFeature([lng, lat], feature)) {
-            allDots.push({ lng, lat });
-          }
-        }
-      }
-    });
-
-    // Styling Tokens - High-End Gold / Brass (Refined)
+    // Styling Tokens
     const COLORS = {
-      goldBase: "rgba(184, 151, 90, 0.4)",
-      goldHighlight: "rgba(230, 194, 128, 0.6)",
-      goldMuted: "rgba(184, 151, 90, 0.08)",
-      outline: "rgba(184, 151, 90, 0.05)",
-      rimLight: "rgba(184, 151, 90, 0.12)",
+      goldBase: "rgba(184, 151, 90, 0.6)",
+      goldSoft: "rgba(184, 151, 90, 0.25)",
+      goldVivid: "rgba(230, 194, 128, 0.9)",
+      goldMuted: "rgba(184, 151, 90, 0.06)",
+      text: "rgba(255, 255, 255, 0.8)",
+      textMuted: "rgba(184, 151, 90, 0.5)",
     };
 
     const render = (elapsed: number, currentScroll: number) => {
       context.clearRect(0, 0, containerWidth, containerHeight);
       
-      // Dynamic scale based on scroll (Zoom-in effect like the model)
-      const dynamicRadius = radius * (0.9 + currentScroll * 0.4);
+      const dynamicRadius = radius * (0.95 + currentScroll * 0.3);
       projection.scale(dynamicRadius);
 
       // 1. Core Sphere Depth
       const sphereGradient = context.createRadialGradient(
-        containerWidth / 2 - dynamicRadius * 0.3, containerHeight / 2 - dynamicRadius * 0.3, 0,
+        containerWidth / 2, containerHeight / 2, dynamicRadius * 0.8,
         containerWidth / 2, containerHeight / 2, dynamicRadius
       );
-      sphereGradient.addColorStop(0, "rgba(20, 20, 20, 1)");
+      sphereGradient.addColorStop(0, "rgba(5, 5, 5, 1)");
       sphereGradient.addColorStop(1, "rgba(0, 0, 0, 1)");
       
       context.beginPath();
@@ -124,85 +88,107 @@ export default function AtmosphericGlobe({
       context.fillStyle = sphereGradient;
       context.fill();
 
-      // 2. Graticule (Subtle grid)
-      const graticule = d3.geoGraticule()();
+      // 2. Graticules (The Wireframe Look)
       context.beginPath();
-      path(graticule);
+      path(d3.geoGraticule()());
       context.strokeStyle = COLORS.goldMuted;
       context.lineWidth = 0.5;
       context.stroke();
 
-      // 3. Dot Visualization (Cinematic points)
-      allDots.forEach((dot, i) => {
-        const projected = projection([dot.lng, dot.lat]);
+      // 3. Land Outlines (The "Drawing" look)
+      context.beginPath();
+      path(landData);
+      context.strokeStyle = "rgba(184, 151, 90, 0.35)";
+      context.lineWidth = 1.2;
+      context.stroke();
+
+      // 4. Land Fill (Subtle dots/grain for depth)
+      // We use the path again but with a dashed or patterned feel if needed, 
+      // but for "just golden outline" we keep it clean.
+      context.save();
+      context.globalAlpha = 0.08;
+      context.beginPath();
+      path(landData);
+      context.fillStyle = COLORS.goldBase;
+      context.fill();
+      context.restore();
+
+      // 5. Contact Markers (Ocean Placement)
+      CONTACT_MARKERS.forEach((marker) => {
+        const coords = [marker.lng, marker.lat] as [number, number];
+        const projected = projection(coords);
+        
         if (projected) {
-          // Calculate lighting based on point position
+          // Visibility check (is it on the front?)
           const dx = projected[0] - containerWidth / 2;
           const dy = projected[1] - containerHeight / 2;
-          const dist = Math.sqrt(dx*dx + dy*dy) / dynamicRadius;
+          const dist = Math.sqrt(dx*dx + dy*dy);
           
-          // Fade points near the edges for spherical feel
-          const sphereAlpha = Math.pow(Math.max(0, 1 - dist), 1.5);
-          
-          // Subtle shimmer effect based on time
-          const shimmer = Math.sin(elapsed * 0.001 + i) * 0.1 + 0.9;
-          
-          context.beginPath();
-          context.arc(projected[0], projected[1], 0.7 * (dynamicRadius / radius), 0, 2 * Math.PI);
-          context.fillStyle = `rgba(184, 151, 90, ${0.35 * sphereAlpha * shimmer})`;
-          context.fill();
-          
-          // Occasional "glint" dots
-          if (i % 150 === 0) {
+          if (dist < dynamicRadius * 0.95) {
+            const opacity = Math.max(0, 1 - (dist / dynamicRadius));
+            const shimmer = Math.sin(elapsed * 0.002 + marker.lng) * 0.2 + 0.8;
+            
+            // Point marker
             context.beginPath();
-            context.arc(projected[0], projected[1], 1.2 * (dynamicRadius / radius), 0, 2 * Math.PI);
-            context.fillStyle = `rgba(184, 151, 90, ${0.1 * sphereAlpha})`;
+            context.arc(projected[0], projected[1], 3, 0, 2 * Math.PI);
+            context.fillStyle = `rgba(230, 194, 128, ${0.9 * opacity * shimmer})`;
             context.fill();
+            
+            // Outer glow for point
+            context.beginPath();
+            context.arc(projected[0], projected[1], 8, 0, 2 * Math.PI);
+            context.strokeStyle = `rgba(184, 151, 90, ${0.2 * opacity})`;
+            context.lineWidth = 1;
+            context.stroke();
+
+            // Label text
+            context.textAlign = "left";
+            context.textBaseline = "middle";
+            
+            // Label Header
+            context.font = "300 10px 'Inter', sans-serif";
+            context.fillStyle = `rgba(184, 151, 90, ${0.6 * opacity})`;
+            context.fillText(marker.label.toUpperCase(), projected[0] + 15, projected[1] - 8);
+            
+            // Label Value
+            context.font = "300 16px 'Cormorant Garamond', serif";
+            context.fillStyle = `rgba(255, 255, 255, ${0.85 * opacity})`;
+            context.fillText(marker.value, projected[0] + 15, projected[1] + 8);
+            
+            // Connector line
+            context.beginPath();
+            context.moveTo(projected[0] + 5, projected[1]);
+            context.lineTo(projected[0] + 12, projected[1]);
+            context.strokeStyle = `rgba(184, 151, 90, ${0.3 * opacity})`;
+            context.lineWidth = 0.5;
+            context.stroke();
           }
         }
       });
 
-      // 4. Atmospheric Rim Light (The "Cinematic" part)
+      // 6. Atmospheric Rim Light
       const rimGradient = context.createRadialGradient(
         containerWidth / 2, containerHeight / 2, dynamicRadius * 0.9,
-        containerWidth / 2, containerHeight / 2, dynamicRadius * 1.02
+        containerWidth / 2, containerHeight / 2, dynamicRadius * 1.05
       );
       rimGradient.addColorStop(0, "rgba(184, 151, 90, 0)");
-      rimGradient.addColorStop(0.8, "rgba(184, 151, 90, 0.05)");
+      rimGradient.addColorStop(0.8, "rgba(184, 151, 90, 0.08)");
       rimGradient.addColorStop(1, "rgba(184, 151, 90, 0)");
 
       context.beginPath();
-      context.arc(containerWidth / 2, containerHeight / 2, dynamicRadius * 1.02, 0, 2 * Math.PI);
+      context.arc(containerWidth / 2, containerHeight / 2, dynamicRadius * 1.05, 0, 2 * Math.PI);
       context.fillStyle = rimGradient;
       context.fill();
-
-      // 5. Light Sweep (Moving reflection)
-      const sweepPos = (elapsed * 0.0001) % 2 - 1; // move from -1 to 1
-      const sweepGradient = context.createLinearGradient(
-        containerWidth / 2 + sweepPos * dynamicRadius * 2, 0,
-        containerWidth / 2 + sweepPos * dynamicRadius * 2 + dynamicRadius, 0
-      );
-      sweepGradient.addColorStop(0, "rgba(184, 151, 90, 0)");
-      sweepGradient.addColorStop(0.5, "rgba(184, 151, 90, 0.03)");
-      sweepGradient.addColorStop(1, "rgba(184, 151, 90, 0)");
-
-      context.globalCompositeOperation = "lighter";
-      context.beginPath();
-      context.arc(containerWidth / 2, containerHeight / 2, dynamicRadius, 0, 2 * Math.PI);
-      context.fillStyle = sweepGradient;
-      context.fill();
-      context.globalCompositeOperation = "source-over";
     };
 
     let baseRotation = [0, -20];
-    const rotationSpeed = 0.003; 
+    const rotationSpeed = 0.002; 
 
     const timer = d3.timer((elapsed) => {
-      // Auto rotation + Scroll-based rotation for "interactivity"
       const currentScroll = typeof scrollProgress === "number" ? scrollProgress : scrollProgress.get();
       const autoRot = elapsed * rotationSpeed;
-      const scrollRot = currentScroll * 180; // half turn across the section
-      projection.rotate([autoRot + scrollRot, baseRotation[1]]);
+      const scrollRot = currentScroll * 120;
+      projection.rotate([autoRot + scrollRot, -15]);
       render(elapsed, currentScroll);
     });
 
@@ -219,7 +205,7 @@ export default function AtmosphericGlobe({
       <canvas
         ref={canvasRef}
         style={{ 
-          filter: "drop-shadow(0 0 30px rgba(184, 151, 90, 0.05))",
+          filter: "drop-shadow(0 0 40px rgba(0,0,0,0.8))",
         }}
       />
     </div>
