@@ -47,9 +47,10 @@ export default function HeroScrollSequence() {
   });
 
   const [isAtTop, setIsAtTop] = useState(true);
-  useEffect(() => {
-    if (window.scrollY > 100) setIsAtTop(false);
-  }, []);
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    // Reappear if we are at the very beginning of the sequence
+    setIsAtTop(latest < 0.05);
+  });
 
   return (
     <>
@@ -97,12 +98,12 @@ export default function HeroScrollSequence() {
           pointerEvents: "none",
         }}
       >
-        <motion.div
-          style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px" }}
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.6, delay: 0.6, ease: [0.19, 1, 0.22, 1] }}
-        >
+          <motion.div
+            initial={{ opacity: 1, y: 0 }}
+            animate={{ opacity: isAtTop ? 1 : 0, y: isAtTop ? 0 : 20 }}
+            transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px" }}
+          >
           <div
             style={{
               width: "40px", height: "1px",

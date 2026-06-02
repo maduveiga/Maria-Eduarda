@@ -72,7 +72,7 @@ export default function AtmosphericGlobe({
     const render = (elapsed: number, currentScroll: number) => {
       context.clearRect(0, 0, containerWidth, containerHeight);
       
-      const dynamicRadius = radius * (0.95 + currentScroll * 0.55);
+      const dynamicRadius = radius * (0.95 + currentScroll * 0.75);
       projection.scale(dynamicRadius);
 
       // 1. Core Sphere Depth

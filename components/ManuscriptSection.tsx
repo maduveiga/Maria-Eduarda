@@ -73,7 +73,7 @@ export default function ManuscriptSection() {
       style={{
         position: "relative",
         background: "#000000",
-        minHeight: "350vh", // Increased height to slow down the scroll-based experience
+        minHeight: "600vh", // Extremely long scroll for maximum reading time and immersion
         marginTop: "-2px",
         overflow: "hidden",
       }}
