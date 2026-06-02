@@ -285,10 +285,10 @@ export default function PortfolioExperience() {
         </div>
         
         <h2 style={{ fontFamily: "var(--font-cormorant)", fontSize: "clamp(2.2rem, 4.5vw, 3.6rem)", fontWeight: 300, color: "rgba(240,240,240,0.88)", margin: "16px 0 0 0", lineHeight: 1.1 }}>
-          Objetos digitais, <em style={{ fontStyle: "italic", color: "rgba(184,151,90,0.7)" }}>criados com precisão.</em>
+          Composições Digitais, <em style={{ fontStyle: "italic", color: "rgba(184,151,90,0.7)" }}>criados com precisão.</em>
         </h2>
         <h3 style={{ fontFamily: "var(--font-cormorant)", fontSize: "clamp(1.5rem, 3vw, 2.2rem)", fontWeight: 300, color: "rgba(180,180,180,0.4)", margin: "4px 0 0 0" }}>
-          Digital objects, <em style={{ fontStyle: "italic", color: "rgba(130,105,60,0.4)" }}>precisely crafted.</em>
+          Digital compositions, <em style={{ fontStyle: "italic", color: "rgba(130,105,60,0.4)" }}>precisely crafted.</em>
         </h3>
         
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: "32px", maxWidth: "480px" }}>

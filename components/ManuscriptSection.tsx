@@ -131,9 +131,9 @@ export default function ManuscriptSection() {
                 fontFamily: "var(--font-cormorant)",
                 fontSize: "clamp(2rem, 4vw, 3.5rem)",
                 fontWeight: 300,
-                lineHeight: 1.2,
-                color: "rgba(255,255,255,0.9)",
-                margin: 0,
+                 lineHeight: 1.2,
+                 color: "rgba(255,255,255,1)",
+                 margin: 0,
                 letterSpacing: "-0.01em",
               }}
             >

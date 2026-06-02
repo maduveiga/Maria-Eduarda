@@ -43,7 +43,7 @@ export default function AtmosphericGlobe({
 
     const containerWidth = width;
     const containerHeight = height;
-    const radius = Math.min(containerWidth, containerHeight) / 2.3;
+    const radius = Math.min(containerWidth, containerHeight) / 2.8;
 
     const dpr = window.devicePixelRatio || 1;
     canvas.width = containerWidth * dpr;
@@ -125,13 +125,19 @@ export default function AtmosphericGlobe({
           const dist = Math.sqrt(dx*dx + dy*dy);
           
           if (dist < dynamicRadius * 0.95) {
+            // COLLISION AVOIDANCE: Hide markers if they are in the central area where the fixed text lives
+            // dy is relative to center. If -120 < dy < 80, it's in the text territory.
+            if (dy > -130 && dy < 100 && Math.abs(dx) < containerWidth * 0.35) {
+               return; 
+            }
+
             const opacity = Math.max(0, 1 - (dist / dynamicRadius));
             const shimmer = Math.sin(elapsed * 0.002 + marker.lng) * 0.2 + 0.8;
             
             // Point marker
             context.beginPath();
-            context.arc(projected[0], projected[1], 3, 0, 2 * Math.PI);
-            context.fillStyle = `rgba(230, 194, 128, ${0.9 * opacity * shimmer})`;
+            context.arc(projected[0], projected[1], 4, 0, 2 * Math.PI);
+            context.fillStyle = `rgba(230, 194, 128, ${1.0 * opacity * shimmer})`;
             context.fill();
             
             // Outer glow for point
@@ -151,8 +157,8 @@ export default function AtmosphericGlobe({
             context.fillText(marker.label.toUpperCase(), projected[0] + 15, projected[1] - 8);
             
             // Label Value
-            context.font = "300 16px 'Cormorant Garamond', serif";
-            context.fillStyle = `rgba(255, 255, 255, ${0.85 * opacity})`;
+            context.font = "300 18px 'Cormorant Garamond', serif";
+            context.fillStyle = `rgba(255, 255, 255, ${0.95 * opacity})`;
             context.fillText(marker.value, projected[0] + 15, projected[1] + 8);
             
             // Connector line
