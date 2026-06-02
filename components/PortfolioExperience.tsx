@@ -351,14 +351,15 @@ export default function PortfolioExperience() {
         
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", marginTop: "16px" }}>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px" }}>
-            <h2 className="shimmer-text" style={{ 
+            <h2 style={{ 
               fontFamily: "var(--font-cormorant)", 
               fontSize: "clamp(2rem, 4.5vw, 4rem)", 
               fontWeight: 300, 
               lineHeight: 1.15,
               letterSpacing: "0.02em",
               textShadow: "0 10px 40px rgba(0,0,0,0.9), 0 0 60px rgba(184,151,90,0.15)",
-              margin: 0
+              margin: 0,
+              color: "rgba(240,240,240,0.95)"
             }}>
               Vamos transmitir uma identidade<br />que permaneça além do tempo?
             </h2>
