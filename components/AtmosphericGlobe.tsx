@@ -43,7 +43,7 @@ export default function AtmosphericGlobe({
 
     const containerWidth = width;
     const containerHeight = height;
-    const radius = Math.min(containerWidth, containerHeight) / 2.8;
+    const radius = Math.min(containerWidth, containerHeight) / 3.2;
 
     const dpr = window.devicePixelRatio || 1;
     canvas.width = containerWidth * dpr;

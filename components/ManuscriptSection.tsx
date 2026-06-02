@@ -96,15 +96,12 @@ export default function ManuscriptSection() {
             opacity: globeOpacity,
             scale: globeScale,
             position: "absolute",
-            top: "45%", // Shift slightly higher than dead center to show the top more prominent
-            left: "50%",
-            transform: "translate(-50%, -50%)",
             zIndex: -1,
           }}
         >
           <AtmosphericGlobe 
-            width={1200} 
-            height={1200} 
+            width={1000} 
+            height={1000} 
             scrollProgress={scrollProgress as any} 
           />
         </motion.div>
