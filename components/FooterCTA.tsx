@@ -61,7 +61,7 @@ export default function FooterCTA() {
             Maria Eduarda Veiga
           </span>
           <span style={{ fontFamily: "var(--font-inter)", fontSize: "0.55rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(184,151,90,0.6)" }}>
-            ESTRATEGISTA VISUAL · CONTENT CREATOR
+            ESTRATEGISTA VISUAL · Posicionamento · Narrativa · Experiências Digitais
           </span>
         </div>
 
