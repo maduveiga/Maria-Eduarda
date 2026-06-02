@@ -48,49 +48,7 @@ export default function FooterCTA() {
       id="contact"
       aria-label="Footer and Contacts"
     >
-      {/* ─── UPPER CONTACT SECTION (From Screenshot) ─── */}
-      <div className="flex flex-col items-center gap-12 mb-32 w-full max-w-4xl mx-auto">
-        <div className="flex items-center gap-10">
-           <motion.a 
-            href="https://wa.me/5547989192263" target="_blank" rel="noopener noreferrer"
-            whileHover={{ scale: 1.1, color: "rgba(184,151,90,1)" }}
-            style={{ color: "rgba(255,255,255,0.7)", transition: "color 0.4s ease" }}
-           >
-             <Icons.WhatsApp />
-           </motion.a>
-           <motion.a 
-            href="https://www.instagram.com/m4du.oficial" target="_blank" rel="noopener noreferrer"
-            whileHover={{ scale: 1.1, color: "rgba(184,151,90,1)" }}
-            style={{ color: "rgba(255,255,255,0.7)", transition: "color 0.4s ease" }}
-           >
-             <Icons.Instagram />
-           </motion.a>
-           <motion.a 
-            href="https://www.tiktok.com/@mariadudaveiga" target="_blank" rel="noopener noreferrer"
-            whileHover={{ scale: 1.1, color: "rgba(184,151,90,1)" }}
-            style={{ color: "rgba(255,255,255,0.7)", transition: "color 0.4s ease" }}
-           >
-             <Icons.TikTok />
-           </motion.a>
-           <motion.a 
-            href="mailto:mari4edu.oficial@gmail.com"
-            whileHover={{ scale: 1.1, color: "rgba(184,151,90,1)" }}
-            style={{ color: "rgba(255,255,255,0.7)", transition: "color 0.4s ease" }}
-           >
-             <Icons.Email />
-           </motion.a>
-        </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "24px", opacity: 0.5 }}>
-           <a href="mailto:mari4edu.oficial@gmail.com" style={{ fontFamily: "var(--font-cormorant)", fontSize: "1.2rem", fontStyle: "italic", color: "#fff", textDecoration: "none" }}>
-             mari4edu.oficial@gmail.com
-           </a>
-           <span style={{ color: "rgba(184,151,90,1)" }}>·</span>
-           <a href="https://wa.me/5547989192263" style={{ fontFamily: "var(--font-cormorant)", fontSize: "1.2rem", fontStyle: "italic", color: "#fff", textDecoration: "none" }}>
-             +55 (47) 98919-2263
-           </a>
-        </div>
-      </div>
 
       {/* ─── BOTTOM META BAR (From Screenshot) ─── */}
       <div 

@@ -359,7 +359,7 @@ export default function PortfolioExperience() {
               letterSpacing: "0.02em",
               textShadow: "0 10px 40px rgba(0,0,0,0.9), 0 0 60px rgba(184,151,90,0.15)",
               margin: 0,
-              color: "rgba(240,240,240,0.95)"
+              color: "rgba(184, 151, 90, 0.75)" // Reverted to golden tone
             }}>
               Vamos transmitir uma identidade<br />que permaneça além do tempo?
             </h2>
