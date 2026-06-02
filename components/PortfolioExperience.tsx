@@ -111,10 +111,10 @@ function ProjectFrame({ project, index }: { project: typeof PROJECTS[0]; index: 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      initial={{ opacity: 0, y: 30, scale: 0.98 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: false, margin: "-10%" }}
-      transition={{ duration: 0.9, delay: (index % 4) * 0.15, ease: [0.19, 1, 0.22, 1] }}
+      viewport={{ once: true, margin: "20%" }} // Trigger earlier
+      transition={{ duration: 0.7, delay: (index % 4) * 0.05, ease: [0.19, 1, 0.22, 1] }} // Faster reveal
       style={{ display: "flex", flexDirection: "column", gap: "16px", width: "100%" }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -174,11 +174,20 @@ function ProjectFrame({ project, index }: { project: typeof PROJECTS[0]; index: 
             )}
 
             {(!isLoaded || !iframeLoaded || iframeError) && (
-              <div style={{ position: "absolute", inset: 0, background: gradients[index % 4], display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1 }}>
+              <div style={{ 
+                position: "absolute", inset: 0, 
+                background: gradients[index % 4], 
+                display: "flex", alignItems: "center", justifyContent: "center", 
+                zIndex: 1 
+              }}>
                  {iframeError ? (
                     <span style={{ color: "rgba(184,151,90,0.5)", fontSize: "0.7rem", fontFamily: "var(--font-inter)", textAlign: "center", padding: "10px" }}>{project.name}</span>
                  ) : (
-                    <div style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1px solid rgba(184,151,90,0.3)", borderTopColor: "rgba(184,151,90,0.8)", animation: "spin 1s linear infinite" }} />
+                    <div className="skeleton-pulse" style={{ 
+                      width: "100%", height: "100%", 
+                      background: "linear-gradient(90deg, transparent, rgba(184,151,90,0.05), transparent)",
+                      animation: "shimmer 2s infinite" 
+                    }} />
                  )}
               </div>
             )}
@@ -261,6 +270,10 @@ export default function PortfolioExperience() {
     >
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
         @keyframes shine { 
            0% { left: -100%; opacity: 0; }
            20% { opacity: 1; }
@@ -269,10 +282,10 @@ export default function PortfolioExperience() {
       `}</style>
       
       <motion.div
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-10%" }}
-        transition={{ duration: 1.4, ease: [0.19, 1, 0.22, 1] }}
+        viewport={{ once: true, margin: "20%" }}
+        transition={{ duration: 1.0, ease: [0.19, 1, 0.22, 1] }}
         style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px", paddingTop: "120px", paddingBottom: "100px", textAlign: "center" }}
       >
         <div style={{ display: "flex", flexDirection: "column" }}>
