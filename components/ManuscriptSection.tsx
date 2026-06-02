@@ -54,17 +54,34 @@ export default function ManuscriptSection() {
     damping: 20
   });
 
-  // Animation values
-  const globeOpacity = useTransform(scrollProgress, [0, 0.2], [0, 1]);
-  const globeScale = useTransform(scrollProgress, [0, 0.4], [0.8, 1]);
-  const atmosphereOpacity = useTransform(scrollProgress, [0.1, 0.3], [0, 1]);
+  // Animation values - Spread across more scroll to slow down the experience
+  const globeOpacity = useTransform(scrollProgress, [0, 0.1], [0, 1]);
+  const globeScale = useTransform(scrollProgress, [0, 0.3], [0.8, 1]);
+  const atmosphereOpacity = useTransform(scrollProgress, [0.05, 0.2], [0, 1]);
   
-  const textOpacity = useTransform(scrollProgress, [0.3, 0.5], [0, 1]);
-  const textY = useTransform(scrollProgress, [0.3, 0.5], [20, 0]);
-  const textBlur = useTransform(scrollProgress, [0.3, 0.5], ["8px", "0px"]);
+  // Text appears early and stays
+  const textOpacity = useTransform(scrollProgress, [0.15, 0.35], [0, 1]);
+  const textY = useTransform(scrollProgress, [0.15, 0.35], [20, 0]);
+  const textBlur = useTransform(scrollProgress, [0.15, 0.35], ["8px", "0px"]);
 
-  const contactContainerOpacity = useTransform(scrollProgress, [0.5, 0.7], [0, 1]);
-  const contactY = useTransform(scrollProgress, [0.5, 0.7], [30, 0]);
+  // Contacts appear after text and last until the very end
+  const contactContainerOpacity = useTransform(scrollProgress, [0.45, 0.85], [0, 1]);
+  const contactY = useTransform(scrollProgress, [0.45, 0.7], [40, 0]);
+
+  // Responsive logic
+  const [dimensions, setDimensions] = useState({ width: 1200, height: 1200 });
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      // Use screen size to determine canvas size, capping at 1200 for performance
+      const w = Math.min(window.innerWidth, 1200);
+      const h = Math.min(window.innerHeight, 1200);
+      setDimensions({ width: w, height: h });
+    };
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
 
   return (
     <section
@@ -100,8 +117,8 @@ export default function ManuscriptSection() {
           }}
         >
           <AtmosphericGlobe 
-            width={1000} 
-            height={1000} 
+            width={dimensions.width} 
+            height={dimensions.height} 
             scrollProgress={scrollProgress as any} 
           />
         </motion.div>
@@ -250,8 +267,6 @@ export default function ManuscriptSection() {
         </div>
       </div>
 
-      {/* Spacer to allow scroll-based progress to complete */}
-      <div style={{ height: "80vh" }} />
     </section>
   );
 }

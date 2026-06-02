@@ -43,7 +43,7 @@ export default function AtmosphericGlobe({
 
     const containerWidth = width;
     const containerHeight = height;
-    const radius = Math.min(containerWidth, containerHeight) / 3.2;
+    const radius = Math.min(containerWidth, containerHeight) / 2.6;
 
     const dpr = window.devicePixelRatio || 1;
     canvas.width = containerWidth * dpr;
@@ -72,7 +72,7 @@ export default function AtmosphericGlobe({
     const render = (elapsed: number, currentScroll: number) => {
       context.clearRect(0, 0, containerWidth, containerHeight);
       
-      const dynamicRadius = radius * (0.95 + currentScroll * 0.75);
+      const dynamicRadius = radius * (0.9 + currentScroll * 0.9);
       projection.scale(dynamicRadius);
 
       // 1. Core Sphere Depth
