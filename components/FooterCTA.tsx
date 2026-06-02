@@ -11,137 +11,126 @@ const FADE_UP = {
   }),
 };
 
+/* ─── Icons (SVG) ─────────────────────────────────────────────────────────── */
+
+const Icons = {
+  WhatsApp: () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
+    </svg>
+  ),
+  Instagram: () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="2" width="20" height="20" rx="5"/>
+      <circle cx="12" cy="12" r="5"/>
+      <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
+    </svg>
+  ),
+  TikTok: () => (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+    </svg>
+  ),
+  Email: () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="4" width="20" height="16" rx="2"/>
+      <path d="M22 7l-10 7L2 7"/>
+    </svg>
+  ),
+};
+
 export default function FooterCTA() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer
-      className="cinema-section relative min-h-screen flex flex-col items-center justify-between px-8 py-24"
-      id="enter"
-      aria-label="Closing call to action"
+      className="cinema-section relative flex flex-col items-center bg-black px-8 pt-40 pb-12"
+      id="contact"
+      aria-label="Footer and Contacts"
     >
-      {/* Separador superior fino — linha dourada, sem radial-gradient atrás */}
-      <div
-        style={{
-          width: "100%",
-          height: "1px",
-          background: "linear-gradient(90deg, transparent, rgba(184,151,90,0.18), transparent)",
-        }}
-        aria-hidden="true"
-      />
+      {/* ─── UPPER CONTACT SECTION (From Screenshot) ─── */}
+      <div className="flex flex-col items-center gap-12 mb-32 w-full max-w-4xl mx-auto">
+        <div className="flex items-center gap-10">
+           <motion.a 
+            href="https://wa.me/5547989192263" target="_blank" rel="noopener noreferrer"
+            whileHover={{ scale: 1.1, color: "rgba(184,151,90,1)" }}
+            style={{ color: "rgba(255,255,255,0.7)", transition: "color 0.4s ease" }}
+           >
+             <Icons.WhatsApp />
+           </motion.a>
+           <motion.a 
+            href="https://www.instagram.com/m4du.oficial" target="_blank" rel="noopener noreferrer"
+            whileHover={{ scale: 1.1, color: "rgba(184,151,90,1)" }}
+            style={{ color: "rgba(255,255,255,0.7)", transition: "color 0.4s ease" }}
+           >
+             <Icons.Instagram />
+           </motion.a>
+           <motion.a 
+            href="https://www.tiktok.com/@mariadudaveiga" target="_blank" rel="noopener noreferrer"
+            whileHover={{ scale: 1.1, color: "rgba(184,151,90,1)" }}
+            style={{ color: "rgba(255,255,255,0.7)", transition: "color 0.4s ease" }}
+           >
+             <Icons.TikTok />
+           </motion.a>
+           <motion.a 
+            href="mailto:mari4edu.oficial@gmail.com"
+            whileHover={{ scale: 1.1, color: "rgba(184,151,90,1)" }}
+            style={{ color: "rgba(255,255,255,0.7)", transition: "color 0.4s ease" }}
+           >
+             <Icons.Email />
+           </motion.a>
+        </div>
 
-      {/* Central CTA */}
-      <div className="flex-1 flex flex-col items-center justify-center gap-12 text-center max-w-2xl mx-auto">
-        <motion.span
-          className="text-label"
-          style={{ color: "rgba(184,151,90,0.55)" }}
-          variants={FADE_UP}
-          initial="hidden"
-          whileInView="visible"
-          custom={0}
-          viewport={{ once: true, margin: "-10%" }}
-        >
-          Entre na Experiência
-          <br /><span style={{ fontSize: "0.45rem", color: "rgba(184,151,90,0.3)", display: "block", marginTop: "4px" }}>Enter the Experience</span>
-        </motion.span>
-
-        <motion.h2
-          className="text-display"
-          style={{ fontSize: "clamp(3rem, 8vw, 6.5rem)", color: "rgba(240,240,240,0.9)", lineHeight: 0.9 }}
-          variants={FADE_UP}
-          initial="hidden"
-          whileInView="visible"
-          custom={0.1}
-          viewport={{ once: true, margin: "-10%" }}
-        >
-          Pronto para
-          <br />
-          <em style={{ color: "rgba(184,151,90,0.8)", fontStyle: "italic" }}>
-            sentir a profundidade?
-          </em>
-          <br />
-          <span style={{ fontSize: "1.2rem", color: "rgba(240,240,240,0.3)", display: "block", marginTop: "16px", fontFamily: "var(--font-inter)", letterSpacing: "0.05em", fontStyle: "normal" }}>
-            Ready to feel depth?
-          </span>
-        </motion.h2>
-
-        <motion.div
-          className="gold-line"
-          variants={FADE_UP}
-          initial="hidden"
-          whileInView="visible"
-          custom={0.2}
-          viewport={{ once: true, margin: "-10%" }}
-        />
-
-        <motion.p
-          className="text-body-cinema"
-          variants={FADE_UP}
-          initial="hidden"
-          whileInView="visible"
-          custom={0.3}
-          viewport={{ once: true, margin: "-10%" }}
-        >
-          Uma experiência de luxo em movimento. Feito para aqueles que exigem mais do espaço digital.
-          <br /><br />
-          <span style={{ fontSize: "0.75rem", color: "rgba(240,240,240,0.25)" }}>
-            Luxury motion experience. Crafted for those who demand more from digital space.
-          </span>
-        </motion.p>
-
-        <motion.div
-          variants={FADE_UP}
-          initial="hidden"
-          whileInView="visible"
-          custom={0.4}
-          viewport={{ once: true, margin: "-10%" }}
-        >
-          <button
-            id="cta-enter"
-            aria-label="Begin the experience"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "16px",
-              padding: "16px 40px",
-              border: "1px solid rgba(184,151,90,0.35)",
-              background: "transparent",
-              color: "rgba(184,151,90,0.8)",
-              fontFamily: "var(--font-inter)",
-              fontSize: "0.6875rem",
-              letterSpacing: "0.35em",
-              textTransform: "uppercase",
-              cursor: "pointer",
-              transition: "all 0.4s cubic-bezier(0.19, 1, 0.22, 1)",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.background = "rgba(184,151,90,0.06)";
-              (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(184,151,90,0.7)";
-              (e.currentTarget as HTMLButtonElement).style.color = "rgba(184,151,90,1)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.background = "transparent";
-              (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(184,151,90,0.35)";
-              (e.currentTarget as HTMLButtonElement).style.color = "rgba(184,151,90,0.8)";
-            }}
-          >
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-              <span>Começar de Novo</span>
-              <span style={{ fontSize: "0.55rem", color: "rgba(184,151,90,0.4)", textTransform: "uppercase", letterSpacing: "0.2em", marginTop: "2px" }}>Begin Again</span>
-            </div>
-            <span style={{ opacity: 0.5 }}>↑</span>
-          </button>
-        </motion.div>
+        <div style={{ display: "flex", alignItems: "center", gap: "24px", opacity: 0.5 }}>
+           <a href="mailto:mari4edu.oficial@gmail.com" style={{ fontFamily: "var(--font-cormorant)", fontSize: "1.2rem", fontStyle: "italic", color: "#fff", textDecoration: "none" }}>
+             mari4edu.oficial@gmail.com
+           </a>
+           <span style={{ color: "rgba(184,151,90,1)" }}>·</span>
+           <a href="https://wa.me/5547989192263" style={{ fontFamily: "var(--font-cormorant)", fontSize: "1.2rem", fontStyle: "italic", color: "#fff", textDecoration: "none" }}>
+             +55 (47) 98919-2263
+           </a>
+        </div>
       </div>
 
-      {/* Footer meta */}
-      <div className="w-full flex items-center justify-between pt-16">
-        <span className="text-label" style={{ color: "rgba(255,255,255,0.15)" }}>MADU</span>
-        <span className="text-label" style={{ color: "rgba(255,255,255,0.1)" }}>
-          © {new Date().getFullYear()}
-        </span>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
-          <span className="text-label" style={{ color: "rgba(255,255,255,0.15)" }}>movimento de luxo</span>
-          <span className="text-label" style={{ color: "rgba(255,255,255,0.08)", fontSize: "0.5rem" }}>luxury motion</span>
+      {/* ─── BOTTOM META BAR (From Screenshot) ─── */}
+      <div 
+        className="w-full flex flex-col md:flex-row items-center justify-between pt-12 border-t border-white/5"
+        style={{ maxWidth: "1600px", margin: "0 auto" }}
+      >
+        {/* Left: Branding */}
+        <div className="flex flex-col gap-1 mb-8 md:mb-0">
+          <span style={{ fontFamily: "var(--font-cormorant)", fontSize: "1.4rem", fontWeight: 300, color: "rgba(255,255,255,0.9)" }}>
+            Maria Eduarda Veiga
+          </span>
+          <span style={{ fontFamily: "var(--font-inter)", fontSize: "0.55rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(184,151,90,0.6)" }}>
+            ESTRATEGISTA VISUAL · CONTENT CREATOR
+          </span>
+        </div>
+
+        {/* Center: Small Icons */}
+        <div className="flex items-center gap-6 mb-8 md:mb-0">
+           <a href="https://www.instagram.com/m4du.oficial" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,0.3)" }}>
+             <Icons.Instagram />
+           </a>
+           <a href="https://www.tiktok.com/@mariadudaveiga" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,0.3)", transform: "scale(0.8)" }}>
+             <Icons.TikTok />
+           </a>
+           <a href="https://wa.me/5547989192263" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,0.3)" }}>
+             <Icons.WhatsApp />
+           </a>
+           <a href="mailto:mari4edu.oficial@gmail.com" style={{ color: "rgba(255,255,255,0.3)" }}>
+             <Icons.Email />
+           </a>
+        </div>
+
+        {/* Right: Credits */}
+        <div className="flex flex-col items-center md:items-flex-end gap-1 text-center md:text-right">
+           <span style={{ fontFamily: "var(--font-inter)", fontSize: "0.55rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.2)" }}>
+             © {currentYear} · TODOS OS DIREITOS RESERVADOS
+           </span>
+           <span style={{ fontFamily: "var(--font-inter)", fontSize: "0.55rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.15)" }}>
+             JOINVILLE - SANTA CATARINA, BRASIL
+           </span>
         </div>
       </div>
     </footer>
