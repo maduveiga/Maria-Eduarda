@@ -18,8 +18,8 @@ const CONTACTS = [
   },
   {
     label: "E-mail",
-    value: "mari4edu.oficial@gmail.com",
-    href: "mailto:mari4edu.oficial@gmail.com",
+    value: "madu.oficial@outlook.com",
+    href: "mailto:madu.oficial@outlook.com",
     icon: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
         <rect x="2" y="4" width="20" height="16" rx="2"/>

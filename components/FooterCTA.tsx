@@ -76,7 +76,7 @@ export default function FooterCTA() {
            <a href="https://wa.me/5547989192263" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,0.3)" }}>
              <Icons.WhatsApp />
            </a>
-           <a href="mailto:mari4edu.oficial@gmail.com" style={{ color: "rgba(255,255,255,0.3)" }}>
+           <a href="mailto:madu.oficial@outlook.com" style={{ color: "rgba(255,255,255,0.3)" }}>
              <Icons.Email />
            </a>
         </div>
