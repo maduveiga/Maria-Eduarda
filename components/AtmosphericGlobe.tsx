@@ -43,7 +43,7 @@ export default function AtmosphericGlobe({
 
     const containerWidth = width;
     const containerHeight = height;
-    const radius = Math.min(containerWidth, containerHeight) / 2.6;
+    const radius = Math.min(containerWidth, containerHeight) / 2.2;
 
     const dpr = window.devicePixelRatio || 1;
     canvas.width = containerWidth * dpr;
@@ -72,7 +72,7 @@ export default function AtmosphericGlobe({
     const render = (elapsed: number, currentScroll: number) => {
       context.clearRect(0, 0, containerWidth, containerHeight);
       
-      const dynamicRadius = radius * (0.9 + currentScroll * 0.9);
+      const dynamicRadius = radius * (1.1 + currentScroll * 1.1);
       projection.scale(dynamicRadius);
 
       // 1. Core Sphere Depth
@@ -192,8 +192,8 @@ export default function AtmosphericGlobe({
 
     const timer = d3.timer((elapsed) => {
       const currentScroll = typeof scrollProgress === "number" ? scrollProgress : scrollProgress.get();
-      const autoRot = elapsed * rotationSpeed;
-      const scrollRot = currentScroll * 120;
+      const autoRot = elapsed * 0.05;
+      const scrollRot = currentScroll * 360 * 5; 
       projection.rotate([autoRot + scrollRot, -15]);
       render(elapsed, currentScroll);
     });
