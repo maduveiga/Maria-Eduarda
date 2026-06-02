@@ -194,24 +194,6 @@ export default function CreativeSignature() {
                 }}
               />
             </motion.div>
-
-            {/* Caption */}
-            <motion.p
-              initial={{ opacity: 0, y: 6 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2, delay: 0.7 }}
-              style={{
-                fontFamily: "var(--font-inter)",
-                fontSize: "10px",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                color: "rgba(184,151,90,0.4)",
-                marginTop: "14px",
-              }}
-            >
-              Diretora Criativa — Identidade & Experiência Digital
-            </motion.p>
           </motion.div>
 
           {/* ═══ RIGHT: Manifesto ═══ */}
@@ -367,6 +349,108 @@ export default function CreativeSignature() {
             </motion.div>
           </motion.div>
         </div>
+
+        {/* Full-width Bottom Signature Banner */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 1.5, delay: 0.6 }}
+          style={{
+            marginTop: "clamp(80px, 8vw, 140px)",
+            width: "100%",
+            position: "relative",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          {/* Subtle line above */}
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: "10%",
+              right: "10%",
+              height: "1px",
+              background: "linear-gradient(90deg, transparent, rgba(184,151,90,0.3), transparent)",
+            }}
+          />
+
+          <motion.div
+            whileHover="hovered"
+            style={{
+              paddingTop: "40px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "12px",
+              textAlign: "center",
+              cursor: "crosshair",
+            }}
+          >
+            {/* Top: Name section */}
+            <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+              <motion.span
+                variants={{ hovered: { letterSpacing: "0.08em" } }}
+                transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+                style={{
+                  fontFamily: "var(--font-cormorant)",
+                  fontSize: "clamp(24px, 3.5vw, 42px)",
+                  fontWeight: 300,
+                  color: "rgba(255,255,255,0.9)",
+                }}
+              >
+                Maria Eduarda Veiga
+              </motion.span>
+              <span style={{ fontSize: "12px", color: "rgba(184,151,90,0.6)" }}>
+                ·
+              </span>
+              <motion.span
+                variants={{ hovered: { letterSpacing: "0.08em" } }}
+                transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+                style={{
+                  fontFamily: "var(--font-cormorant)",
+                  fontSize: "clamp(24px, 3.5vw, 42px)",
+                  fontWeight: 300,
+                  color: "rgba(255,255,255,0.9)",
+                  fontStyle: "italic",
+                }}
+              >
+                Madu
+              </motion.span>
+            </div>
+
+            {/* Middle: Elegant Line */}
+            <motion.div
+              variants={{ hovered: { width: "100%", opacity: 1 } }}
+              transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+              style={{
+                width: "60%",
+                height: "1px",
+                background: "linear-gradient(90deg, transparent, rgba(184,151,90,0.5), transparent)",
+                opacity: 0.5,
+                marginTop: "4px",
+                marginBottom: "4px",
+              }}
+            />
+
+            {/* Bottom: Subtitle */}
+            <motion.span
+              variants={{ hovered: { letterSpacing: "0.22em", color: "rgba(184,151,90,1)" } }}
+              transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
+              style={{
+                fontFamily: "var(--font-inter)",
+                fontSize: "clamp(9px, 1.1vw, 12px)",
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                color: "rgba(184,151,90,0.7)",
+                fontWeight: 300,
+              }}
+            >
+              Posicionamento & Estratégia Digital
+            </motion.span>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
