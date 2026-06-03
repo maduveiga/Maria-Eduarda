@@ -87,61 +87,64 @@ export default function HeroTextLayers({ progress, rawProgress }: HeroTextLayers
   // A imagem da ampulheta em mobile é mais alta que larga (portrait),
   // então o canvas cria letterbox nas laterais (pretas).
   // Posicionamos os textos na zona escura INFERIOR (sob a ampulheta).
+  // ── Estilos MOBILE/TABLET — Otimizados para experiência cinematográfica ──
   const mobileTextStyle: React.CSSProperties = {
     position: "absolute",
-    left: "50%",
-    transform: "translateX(-50%)",
-    width: "90vw",
-    maxWidth: "380px",
+    left: 0,
+    right: 0,
+    width: "100%",
+    padding: "0 24px",
     display: "flex",
     flexDirection: "column",
-    gap: "8px",
+    gap: "10px",
     pointerEvents: "none",
     textAlign: "center",
-    // Zona escura inferior — após o final da imagem (~82% da altura da tela em portrait)
-    bottom: "clamp(24px, 6vh, 60px)",
+    alignItems: "center",
+    // Zona inferior — ajustada para ficar mais próxima da ampulheta mas sem sobrepor demais
+    bottom: "clamp(40px, 12vh, 100px)",
+    zIndex: 30,
   };
 
-  // Para o texto 1 usamos zona SUPERIOR (acima da ampulheta)
+  // Para o texto 1 usamos uma zona superior mais equilibrada
   const mobileTextTopStyle: React.CSSProperties = {
     ...mobileTextStyle,
     bottom: "auto",
-    top: "clamp(24px, 5vh, 50px)",
+    top: "clamp(32px, 8vh, 80px)",
   };
 
   // ── Tipografia ──────────────────────────────────────────────────────
   const titleStyle: React.CSSProperties = {
     fontFamily: "var(--font-cormorant)",
     fontSize: isMobileTablet
-      ? "clamp(1.25rem, 4.5vw, 1.8rem)"
+      ? "clamp(1.35rem, 5vw, 1.9rem)"
       : "clamp(1.6rem, 2.8vw, 2.4rem)",
     fontWeight: 300,
-    color: "rgba(240, 240, 240, 0.92)",
-    lineHeight: 1.2,
+    color: "rgba(245, 245, 245, 0.95)",
+    lineHeight: 1.25,
     fontStyle: "italic",
-    letterSpacing: "0.01em",
+    letterSpacing: "0.02em",
     margin: 0,
   };
 
   const enStyle: React.CSSProperties = {
     fontFamily: "var(--font-inter)",
-    fontSize: isMobileTablet ? "0.6rem" : "clamp(0.65rem, 0.9vw, 0.78rem)",
-    color: "rgba(240, 240, 240, 0.22)",
+    fontSize: isMobileTablet ? "0.65rem" : "clamp(0.65rem, 0.9vw, 0.78rem)",
+    color: "rgba(240, 240, 240, 0.25)",
     lineHeight: 1.5,
     fontStyle: "italic",
     fontWeight: 300,
-    letterSpacing: "0.04em",
+    letterSpacing: "0.05em",
     margin: 0,
-    marginTop: "2px",
+    marginTop: "4px",
   };
 
   const pStyle: React.CSSProperties = {
     fontFamily: "var(--font-cormorant)",
     fontSize: isMobileTablet
-      ? "clamp(1.05rem, 3.5vw, 1.4rem)"
+      ? "clamp(1.15rem, 4vw, 1.5rem)"
       : "clamp(1.23rem, 1.57vw, 1.45rem)",
-    color: "rgba(240, 240, 240, 0.78)",
-    lineHeight: 1.4,
+    color: "rgba(240, 240, 240, 0.85)",
+    lineHeight: 1.45,
     fontWeight: 300,
     fontStyle: "italic",
     letterSpacing: "0.02em",
@@ -150,13 +153,13 @@ export default function HeroTextLayers({ progress, rawProgress }: HeroTextLayers
 
   const pEnStyle: React.CSSProperties = {
     fontFamily: "var(--font-inter)",
-    fontSize: isMobileTablet ? "0.58rem" : "clamp(0.68rem, 0.85vw, 0.78rem)",
-    color: "rgba(240, 240, 240, 0.18)",
-    lineHeight: 1.55,
+    fontSize: isMobileTablet ? "0.62rem" : "clamp(0.68rem, 0.85vw, 0.78rem)",
+    color: "rgba(240, 240, 240, 0.22)",
+    lineHeight: 1.6,
     fontStyle: "italic",
     fontWeight: 300,
     margin: 0,
-    marginTop: "4px",
+    marginTop: "6px",
   };
 
   const gold = "rgba(184, 151, 90, 0.85)";

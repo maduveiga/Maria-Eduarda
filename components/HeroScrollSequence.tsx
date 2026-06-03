@@ -165,19 +165,19 @@ export default function HeroScrollSequence() {
             </motion.span>
           )}
 
-          {/* Subtítulo */}
           <motion.p
             className="text-label"
             style={{
               color: "rgba(240,240,240,0.30)",
               letterSpacing: "0.3em",
               fontSize: isMobile ? "0.55rem" : undefined,
+              textTransform: "uppercase",
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.4, delay: isMobile ? 1.4 : 1.2, ease: [0.19, 1, 0.22, 1] }}
           >
-            beyond static motion
+            Beyond Surface
           </motion.p>
 
           {/* Linha decorativa inferior */}
