@@ -83,25 +83,22 @@ export default function HeroScrollSequence() {
       {/* ── Textos scroll-driven (UI spring) ────────────────────────── */}
       <HeroTextLayers progress={uiProgress} rawProgress={scrollYProgress} />
 
-      {/* ── Hero title — desaparece ao começar scroll ──────────────── */}
+      {/* ── Hero title — Estático no centro, apenas fade-out via scroll ──────────────── */}
       <motion.div
         className="hero-title-container"
         style={{
-          opacity: isAtTop ? heroTitleOpacity : 0,
-          display: isAtTop ? "flex" : "none",
+          opacity: heroTitleOpacity,
           position: "fixed",
           inset: 0,
           zIndex: 20,
+          display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
           pointerEvents: "none",
         }}
       >
-          <motion.div
-            initial={{ opacity: 1, y: 0 }}
-            animate={{ opacity: isAtTop ? 1 : 0, y: isAtTop ? 0 : 20 }}
-            transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+          <div
             style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px" }}
           >
           <div
@@ -137,7 +134,7 @@ export default function HeroScrollSequence() {
               background: "linear-gradient(90deg, transparent, rgba(184,151,90,0.35), transparent)",
             }}
           />
-        </motion.div>
+        </div>
       </motion.div>
 
       {/* ── Container tall — canvas sticky dentro dele ──────────────── */}
