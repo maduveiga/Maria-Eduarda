@@ -108,13 +108,13 @@ export default function HeroScrollSequence() {
             }}
           />
           <span
-            className="shimmer-text"
             style={{
               fontFamily: "var(--font-cormorant)",
               fontSize: "clamp(3rem, 8vw, 6rem)",
               fontWeight: 300,
               letterSpacing: "0.25em",
               lineHeight: 1,
+              color: "rgba(184, 151, 90, 0.95)", // Static gold color
             }}
           >
             MADU
