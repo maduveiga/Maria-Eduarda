@@ -281,23 +281,28 @@ body {
   }
 }
 
-/* ─── Shimmer Service V2 (Versão Ultra-Visível - Baseada no vídeo MODELO) ─ */
-.shimmer-service-v2 {
+/* ─── Shimmer V3 Modelo (Hard Reset para Cache) ─────────────────────────── */
+.shimmer-v3-modelo {
   display: inline-block;
   background: linear-gradient(
     120deg,
-    rgba(184, 151, 90, 0.3) 0%,
-    rgba(184, 151, 90, 0.3) 42%,
+    rgba(184, 151, 90, 0.35) 20%,
+    rgba(184, 151, 90, 0.35) 40%,
     rgba(255, 255, 255, 1) 50%,
-    rgba(184, 151, 90, 0.3) 58%,
-    rgba(184, 151, 90, 0.3) 100%
+    rgba(184, 151, 90, 0.35) 60%,
+    rgba(184, 151, 90, 0.35) 80%
   );
-  background-size: 200% 100%;
+  background-size: 200% auto;
   color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: shimmer 6s linear infinite;
+  animation: shine-fast 4s linear infinite;
+}
+
+@keyframes shine-fast {
+  from { background-position: 200% center; }
+  to { background-position: -200% center; }
 }
 
 /* ─── Performance: Reduce motion ─────────────────────────────────────────── */
