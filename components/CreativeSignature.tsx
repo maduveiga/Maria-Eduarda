@@ -155,7 +155,6 @@ export default function CreativeSignature() {
                   style={{
                     objectFit: "cover",
                     objectPosition: "center top",
-                    filter: "contrast(1.04) brightness(0.92)",
                   }}
                 />
               </motion.div>

@@ -56,7 +56,7 @@ export default function FooterCTA() {
         style={{ maxWidth: "1600px", margin: "0 auto" }}
       >
         {/* Left: Branding */}
-        <div className="flex flex-col gap-1 mb-8 md:mb-0">
+        <div className="flex-1 flex flex-col gap-1 mb-8 md:mb-0">
           <span style={{ fontFamily: "var(--font-cormorant)", fontSize: "1.4rem", fontWeight: 300, color: "rgba(255,255,255,0.9)" }}>
             Maria Eduarda Veiga
           </span>
@@ -82,11 +82,11 @@ export default function FooterCTA() {
         </div>
 
         {/* Right: Credits */}
-        <div className="flex flex-col items-center md:items-flex-end gap-1 text-center md:text-right">
-           <span style={{ fontFamily: "var(--font-inter)", fontSize: "0.55rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.2)" }}>
+        <div className="flex-1 flex flex-col items-center md:items-end gap-1 text-center md:text-right">
+           <span style={{ fontFamily: "var(--font-inter)", fontSize: "0.55rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.45)" }}>
              © {currentYear} · TODOS OS DIREITOS RESERVADOS
            </span>
-           <span style={{ fontFamily: "var(--font-inter)", fontSize: "0.55rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.15)" }}>
+           <span style={{ fontFamily: "var(--font-inter)", fontSize: "0.55rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)" }}>
              JOINVILLE - SANTA CATARINA, BRASIL
            </span>
         </div>
