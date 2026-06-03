@@ -139,7 +139,6 @@ export default function CreativeSignature() {
                   "0 50px 100px -20px rgba(0,0,0,0.95), 0 0 0 1px rgba(255,255,255,0.03)",
               }}
             >
-              {/* Scroll parallax sits inside — image moves within container */}
               <motion.div
                 style={{
                   position: "absolute",
@@ -159,7 +158,6 @@ export default function CreativeSignature() {
                 />
               </motion.div>
 
-              {/* Bottom vignette */}
               <div
                 style={{
                   position: "absolute",
@@ -171,7 +169,6 @@ export default function CreativeSignature() {
                 }}
               />
 
-              {/* Light sweep */}
               <motion.div
                 animate={{ left: ["-60%", "160%"] }}
                 transition={{
@@ -346,6 +343,47 @@ export default function CreativeSignature() {
                 atmosphere, depth, and sophistication go beyond the obvious.
               </p>
             </motion.div>
+
+            {/* ═══ NEW: Literary Signature Block (Integrated into right column) ═══ */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.4, delay: 0.8, ease: [0.19, 1, 0.22, 1] }}
+              style={{
+                marginTop: "48px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "20px",
+                borderTop: "1px solid rgba(184,151,90,0.15)",
+                paddingTop: "32px",
+              }}
+            >
+              <h3 style={{ 
+                fontFamily: "var(--font-cormorant)", 
+                fontSize: "clamp(1.2rem, 1.8vw, 1.6rem)", 
+                fontWeight: 300, 
+                lineHeight: 1.4, 
+                color: "rgba(255,255,255,0.95)",
+                margin: 0,
+                textWrap: "balance" 
+              }}>
+                A escrita permanece como uma das origens mais profundas do meu processo criativo.
+              </h3>
+              
+              <p style={{ 
+                fontFamily: "var(--font-cormorant)", 
+                fontSize: "clamp(0.95rem, 1.3vw, 1.15rem)", 
+                fontWeight: 300, 
+                fontStyle: "italic",
+                lineHeight: 1.6, 
+                color: "rgba(184,151,90,0.75)",
+                margin: 0,
+                textWrap: "balance"
+              }}>
+                Parte dessa trajetória foi reconhecida por premiações literárias e iniciativas culturais.
+              </p>
+            </motion.div>
           </motion.div>
         </div>
 
@@ -466,54 +504,6 @@ export default function CreativeSignature() {
               Estratégia · Conteúdo · Design · Copywriting · Social Media · Desenvolvimento Web · Vídeo · IA Aplicada à Criação
             </motion.span>
           </motion.div>
-        </motion.div>
-
-        {/* ═══ NEW: Literary Signature Block (Alteration 2) ═══ */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
-          style={{
-            marginTop: "clamp(120px, 12vw, 200px)",
-            textAlign: "center",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "24px",
-            padding: "0 24px",
-          }}
-        >
-          <div style={{ width: "40px", height: "1px", background: "linear-gradient(90deg, transparent, rgba(184,151,90,0.5), transparent)", marginBottom: "8px" }} />
-          
-          <h3 style={{ 
-            fontFamily: "var(--font-cormorant)", 
-            fontSize: "clamp(1.5rem, 2.8vw, 2.2rem)", 
-            fontWeight: 300, 
-            lineHeight: 1.4, 
-            color: "rgba(255,255,255,0.95)",
-            margin: 0,
-            maxWidth: "800px"
-          }}>
-            A escrita permanece como uma das origens mais profundas do meu processo criativo.
-          </h3>
-          
-          <p style={{ 
-            fontFamily: "var(--font-cormorant)", 
-            fontSize: "clamp(1.1rem, 1.6vw, 1.35rem)", 
-            fontWeight: 300, 
-            fontStyle: "italic",
-            lineHeight: 1.6, 
-            color: "rgba(184,151,90,0.75)",
-            margin: 0,
-            maxWidth: "700px"
-          }}>
-            Parte dessa trajetória foi reconhecida por premiações literárias e iniciativas culturais.
-          </p>
-
-          <div style={{ marginTop: "16px", letterSpacing: "0.8em", color: "rgba(255,255,255,0.08)", fontSize: "0.6rem", textTransform: "uppercase" }}>
-            · · ·
-          </div>
         </motion.div>
       </div>
     </section>
