@@ -101,26 +101,44 @@ export default function SequenceCanvas({
       // ── Pega o target atual (O(1), sem React re-render) ────────────────
       const target = progress.get();
 
-      // ── Mapeamento EXATO (1:1 com o scroll) ────────────────────────────
-      // Nenhuma suavização extra ou inércia interna. A sincronização é absoluta.
-      const frameIndex = Math.round(target * (totalFrames - 1));
+      // ── LERP Loop: Suavização Cinematográfica ──────────────────────────
+      // displayProgress persegue o target com inércia.
+      displayProgress += (target - displayProgress) * 0.08;
 
-      // ── Skip draw se for o mesmo frame ──────────────────────────
-      if (frameIndex === lastRenderedFrame) return;
+      // Se a diferença for insignificante, evitamos cálculos de draw
+      if (Math.abs(target - displayProgress) < 0.00001 && Math.round(displayProgress * (totalFrames - 1)) === lastRenderedFrame) return;
+
+      const exactFrame = displayProgress * (totalFrames - 1);
+      const frameIndex = Math.floor(exactFrame);
+      const nextFrameIndex = Math.min(frameIndex + 1, totalFrames - 1);
+      const crossfade = exactFrame - frameIndex;
+
+      // ── Skip draw se nada mudou visualmente significativa ────────────────
+      if (frameIndex === lastRenderedFrame && crossfade < 0.01) return;
       lastRenderedFrame = frameIndex;
 
       const img = images[frameIndex];
+      const nextImg = images[nextFrameIndex];
+
       if (!img) return;
 
-      // ── Frame base (sempre opacidade 100%, cortes secos sem ghosting) ──
+      // ── Lógica de Crossfade Cinematográfico ────────────────────────────
+      // Desenha o frame base
       ctx.globalAlpha = 1;
       renderFrame(canvas, ctx, img, true);
 
-      // ── Veo watermark mask — sempre globalAlpha=1, APÓS frames ───────
+      // Se houver progresso significativo entre frames, faz o blend suave
+      if (crossfade > 0.01 && nextImg && frameIndex !== nextFrameIndex) {
+        ctx.globalAlpha = crossfade;
+        renderFrame(canvas, ctx, nextImg, false); // false para não limpar o fundo
+      }
+
+      // ── Máscara de composição final — sempre globalAlpha=1 ─────────────
       ctx.globalAlpha = 1;
       applyVeoMask(ctx, img, canvas.width, canvas.height);
     };
 
+    let displayProgress = progress.get(); // Começa no ponto atual do scroll
     rafId = requestAnimationFrame(render);
     return () => cancelAnimationFrame(rafId);
   }, [images, progress, isLoaded]);
