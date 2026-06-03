@@ -8,7 +8,7 @@ import CinematicOverlay from "./CinematicOverlay";
 import HeroTextLayers from "./HeroTextLayers";
 import ScrollIndicator from "./ScrollIndicator";
 
-const SCROLL_HEIGHT = "1000vh";
+const SCROLL_HEIGHT = "750vh";
 
 export default function HeroScrollSequence() {
   const containerRef = useRef<HTMLDivElement>(null);
