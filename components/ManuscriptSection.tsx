@@ -156,8 +156,19 @@ export default function ManuscriptSection() {
 
           {/* ITEM 3: WHATSAPP (SECONDARY) */}
           <motion.a 
-            href={CONTACTS[0].href} target="_blank" rel="noopener noreferrer"
-            style={{ opacity: waOpacity, position: "absolute", display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", textDecoration: "none" }}
+            href="https://wa.me/5547989192263?text=Ol%C3%A1%20Madu!%20Gostaria%20de%20iniciar%20uma%20conex%C3%A3o." 
+            target="_blank" rel="noopener noreferrer"
+            style={{ 
+              opacity: waOpacity, 
+              position: "absolute", 
+              display: "flex", 
+              flexDirection: "column", 
+              alignItems: "center", 
+              gap: "20px", 
+              textDecoration: "none",
+              zIndex: 30,
+              pointerEvents: scrollProgress.get() > 0.35 && scrollProgress.get() < 0.51 ? "auto" : "none"
+            }}
           >
             <div style={{ padding: "20px", borderRadius: "50%", border: "1px solid rgba(184,151,90,0.2)", background: "rgba(0,0,0,0.3)" }}>
               {CONTACTS[0].icon}
@@ -169,7 +180,7 @@ export default function ManuscriptSection() {
           </motion.a>
 
           {/* ITEM 4: PHRASE */}
-          <motion.div style={{ opacity: phrase3Opacity, textAlign: "center", maxWidth: "900px", position: "absolute", zIndex: 10 }}>
+          <motion.div style={{ opacity: phrase3Opacity, textAlign: "center", maxWidth: "900px", position: "absolute", zIndex: 10, pointerEvents: "none" }}>
             <h2 style={{ fontFamily: "var(--font-cormorant)", fontSize: "clamp(2.2rem, 5vw, 4.2rem)", fontWeight: 300, color: "#fff", margin: 0, lineHeight: 1.15 }}>
               Cada detalhe<br />
               <span style={{ color: "rgba(184,151,90,0.9)", fontStyle: "italic" }}>comunica.</span>
@@ -178,8 +189,19 @@ export default function ManuscriptSection() {
 
           {/* ITEM 5: INSTAGRAM (SECONDARY) */}
           <motion.a 
-            href={CONTACTS[2].href} target="_blank" rel="noopener noreferrer"
-            style={{ opacity: igOpacity, position: "absolute", display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", textDecoration: "none" }}
+            href="https://www.instagram.com/m4du.oficial" 
+            target="_blank" rel="noopener noreferrer"
+            style={{ 
+              opacity: igOpacity, 
+              position: "absolute", 
+              display: "flex", 
+              flexDirection: "column", 
+              alignItems: "center", 
+              gap: "20px", 
+              textDecoration: "none",
+              zIndex: 35,
+              pointerEvents: scrollProgress.get() > 0.63 && scrollProgress.get() < 0.79 ? "auto" : "none"
+            }}
           >
             <div style={{ padding: "20px", borderRadius: "50%", border: "1px solid rgba(184,151,90,0.2)", background: "rgba(0,0,0,0.3)" }}>
               {CONTACTS[2].icon}
@@ -191,7 +213,7 @@ export default function ManuscriptSection() {
           </motion.a>
 
           {/* ITEM 6: PHRASE */}
-          <motion.div style={{ opacity: phrase4Opacity, textAlign: "center", maxWidth: "900px", position: "absolute", zIndex: 10 }}>
+          <motion.div style={{ opacity: phrase4Opacity, textAlign: "center", maxWidth: "900px", position: "absolute", zIndex: 10, pointerEvents: "none" }}>
             <h2 style={{ fontFamily: "var(--font-cormorant)", fontSize: "clamp(2.2rem, 5vw, 4.2rem)", fontWeight: 300, color: "#fff", margin: 0, lineHeight: 1.15 }}>
               Direção antes do<br />
               <span style={{ color: "rgba(184,151,90,0.9)", fontStyle: "italic" }}>movimento.</span>
@@ -200,8 +222,19 @@ export default function ManuscriptSection() {
 
           {/* ITEM 7: E-MAIL (SECONDARY) */}
           <motion.a 
-            href={CONTACTS[1].href} target="_blank" rel="noopener noreferrer"
-            style={{ opacity: mailOpacity, position: "absolute", display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", textDecoration: "none" }}
+            href="mailto:madu.oficial@outlook.com" 
+            target="_blank" rel="noopener noreferrer"
+            style={{ 
+              opacity: mailOpacity, 
+              position: "absolute", 
+              display: "flex", 
+              flexDirection: "column", 
+              alignItems: "center", 
+              gap: "20px", 
+              textDecoration: "none",
+              zIndex: 30,
+              pointerEvents: scrollProgress.get() > 0.90 ? "auto" : "none"
+            }}
           >
             <div style={{ padding: "20px", borderRadius: "50%", border: "1px solid rgba(184,151,90,0.2)", background: "rgba(0,0,0,0.3)" }}>
               {CONTACTS[1].icon}
@@ -221,31 +254,34 @@ export default function ManuscriptSection() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              gap: "24px"
+              gap: "24px",
+              zIndex: 50 // HIGH Z-INDEX TO ENSURE CLICKABILITY
             }}
           >
             <motion.a
-                href="https://wa.me/5547989192263"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                style={{
-                  padding: "16px 44px",
-                  borderRadius: "40px",
-                  background: "linear-gradient(145deg, #111111, #000000)",
-                  border: "1px solid rgba(184,151,90,0.4)",
-                  color: "#fff",
-                  fontFamily: "var(--font-inter)",
-                  fontSize: "0.72rem",
-                  fontWeight: 500,
-                  letterSpacing: "0.22em",
-                  textTransform: "uppercase",
-                  textDecoration: "none",
-                  boxShadow: "0 15px 35px rgba(0,0,0,0.6)",
-                }}
+              href="https://wa.me/5547989192263?text=Ol%C3%A1%20Madu!%20Gostaria%20de%20iniciar%20uma%20conex%C3%A3o."
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              style={{
+                padding: "16px 44px",
+                borderRadius: "40px",
+                background: "linear-gradient(145deg, #111111, #000000)",
+                border: "1px solid rgba(184,151,90,0.4)",
+                color: "#fff",
+                fontFamily: "var(--font-inter)",
+                fontSize: "0.72rem",
+                fontWeight: 500,
+                letterSpacing: "0.22em",
+                textTransform: "uppercase",
+                textDecoration: "none",
+                display: "inline-block",
+                boxShadow: "0 15px 35px rgba(0,0,0,0.6)",
+                cursor: "pointer"
+              }}
             >
-                Iniciar uma conexão com a Madu
+              Iniciar uma conexão com a Madu
             </motion.a>
           </motion.div>
 

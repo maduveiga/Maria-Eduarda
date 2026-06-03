@@ -39,7 +39,7 @@ export default function CreativeSignature() {
       onMouseMove={handleMouseMove}
       style={{
         background: "#000000",
-        padding: "140px 0 160px",
+        padding: "clamp(60px, 10vw, 140px) 0 clamp(80px, 12vw, 160px)",
         position: "relative",
         overflow: "hidden",
       }}
@@ -66,17 +66,17 @@ export default function CreativeSignature() {
         style={{
           maxWidth: "1360px",
           margin: "0 auto",
-          padding: "0 clamp(24px, 6vw, 100px)",
+          padding: "0 clamp(20px, 6vw, 100px)",
           position: "relative",
           zIndex: 2,
         }}
       >
-        {/* Grid: photo left (wider), text right */}
+        {/* Grid: photo left, manifesto right */}
         <div
+          className="signature-grid"
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "clamp(48px, 6vw, 96px)",
+            gap: "clamp(32px, 6vw, 96px)",
             alignItems: "start",
           }}
         >
@@ -124,10 +124,9 @@ export default function CreativeSignature() {
               }}
             />
 
-            {/* Photo container — full aspect ratio 3/4 */}
             <motion.div
-              initial={{ opacity: 0, filter: "blur(14px)", scale: 0.98 }}
-              whileInView={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+              initial={{ opacity: 0, scale: 0.98 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-8%" }}
               transition={{ duration: 2.0, ease: [0.19, 1, 0.22, 1] }}
               style={{
@@ -148,7 +147,7 @@ export default function CreativeSignature() {
               >
                 <Image
                   src="/creative_visionary_portrait.png"
-                  alt="Madu — Diretora Criativa"
+                  alt="Madu"
                   fill
                   priority
                   style={{
@@ -157,7 +156,6 @@ export default function CreativeSignature() {
                   }}
                 />
               </motion.div>
-
               <div
                 style={{
                   position: "absolute",
@@ -168,45 +166,24 @@ export default function CreativeSignature() {
                   zIndex: 2,
                 }}
               />
-
-              <motion.div
-                animate={{ left: ["-60%", "160%"] }}
-                transition={{
-                  duration: 3.5,
-                  repeat: Infinity,
-                  repeatDelay: 7,
-                  ease: "easeInOut",
-                }}
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  bottom: 0,
-                  width: "30%",
-                  background:
-                    "linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)",
-                  transform: "skewX(-18deg)",
-                  pointerEvents: "none",
-                  zIndex: 3,
-                }}
-              />
             </motion.div>
           </motion.div>
 
           {/* ═══ RIGHT: Manifesto ═══ */}
           <motion.div
             style={{
-              paddingTop: "clamp(10px, 3vw, 48px)",
+              paddingTop: "clamp(0px, 3vw, 48px)",
               x: textMouseX,
               y: textMouseY,
               display: "flex",
               flexDirection: "column",
-              gap: "clamp(24px, 2.5vw, 38px)",
+              gap: "clamp(20px, 2.5vw, 38px)",
             }}
           >
             <motion.p
-              initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, margin: "-8%" }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 1.4, delay: 0.1, ease: [0.19, 1, 0.22, 1] }}
               style={{
                 fontFamily: "var(--font-cormorant)",
@@ -240,9 +217,9 @@ export default function CreativeSignature() {
             />
 
             <motion.p
-              initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, margin: "-8%" }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 1.4, delay: 0.3, ease: [0.19, 1, 0.22, 1] }}
               style={{
                 fontFamily: "var(--font-cormorant)",
@@ -258,9 +235,9 @@ export default function CreativeSignature() {
             </motion.p>
 
             <motion.p
-              initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, margin: "-8%" }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 1.4, delay: 0.5, ease: [0.19, 1, 0.22, 1] }}
               style={{
                 fontFamily: "var(--font-cormorant)",
@@ -282,7 +259,7 @@ export default function CreativeSignature() {
             <motion.blockquote
               initial={{ opacity: 0, x: -12 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-8%" }}
+              viewport={{ once: true }}
               transition={{ duration: 1.5, delay: 0.65, ease: [0.19, 1, 0.22, 1] }}
               style={{
                 margin: "4px 0 0",
@@ -299,211 +276,176 @@ export default function CreativeSignature() {
               Existe um traço invisível entre o silêncio e o impacto, onde
               atmosfera, profundidade e sofisticação ultrapassam o óbvio.
             </motion.blockquote>
-
-            {/* EN translation */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.8, delay: 0.9 }}
-              style={{
-                borderTop: "1px solid rgba(255,255,255,0.05)",
-                paddingTop: "24px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "12px",
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: "var(--font-inter)",
-                  fontSize: "clamp(0.7rem, 0.8vw, 0.8rem)",
-                  lineHeight: 1.75,
-                  color: "rgba(255,255,255,0.2)",
-                  fontWeight: 300,
-                  margin: 0,
-                }}
-              >
-                Between classic references and contemporary technology, my
-                direction brings digital experiences to life. Every composition
-                is born with intention, transparency, and meticulous attention
-                to the elements that make a brand unforgettable.
-              </p>
-              <p
-                style={{
-                  fontFamily: "var(--font-inter)",
-                  fontSize: "clamp(0.7rem, 0.8vw, 0.8rem)",
-                  lineHeight: 1.75,
-                  color: "rgba(184,151,90,0.32)",
-                  fontStyle: "italic",
-                  margin: 0,
-                }}
-              >
-                There is an invisible line between silence and impact, where
-                atmosphere, depth, and sophistication go beyond the obvious.
-              </p>
-            </motion.div>
-
-            {/* ═══ NEW: Literary Signature Block (Integrated into right column) ═══ */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.4, delay: 0.8, ease: [0.19, 1, 0.22, 1] }}
-              style={{
-                marginTop: "48px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "20px",
-                borderTop: "1px solid rgba(184,151,90,0.15)",
-                paddingTop: "32px",
-              }}
-            >
-              <h3 style={{ 
-                fontFamily: "var(--font-cormorant)", 
-                fontSize: "clamp(1.2rem, 1.8vw, 1.6rem)", 
-                fontWeight: 300, 
-                lineHeight: 1.4, 
-                color: "rgba(255,255,255,0.95)",
-                margin: 0,
-                textWrap: "balance" 
-              }}>
-                A escrita permanece como uma das origens mais profundas do meu processo criativo.
-              </h3>
-              
-              <p style={{ 
-                fontFamily: "var(--font-cormorant)", 
-                fontSize: "clamp(0.95rem, 1.3vw, 1.15rem)", 
-                fontWeight: 300, 
-                fontStyle: "italic",
-                lineHeight: 1.6, 
-                color: "rgba(184,151,90,0.75)",
-                margin: 0,
-                textWrap: "balance"
-              }}>
-                Parte dessa trajetória foi reconhecida por premiações literárias e iniciativas culturais.
-              </p>
-            </motion.div>
           </motion.div>
         </div>
 
-        {/* Full-width Bottom Signature Banner */}
+        {/* ═══ NEW: Literary Signature Block (Full-width centered) ═══ */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.6, ease: [0.19, 1, 0.22, 1] }}
+          style={{
+            marginTop: "clamp(60px, 12vw, 140px)",
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "clamp(12px, 2vw, 24px)",
+            width: "100%"
+          }}
+        >
+          <div style={{ width: "60px", height: "1px", background: "linear-gradient(90deg, transparent, rgba(184,151,90,0.5), transparent)", marginBottom: "8px" }} />
+          
+          <div className="literary-container" style={{ width: "100%", overflow: "hidden" }}>
+             <h3 className="literary-phrase" style={{ 
+               fontFamily: "var(--font-cormorant)", 
+               fontSize: "clamp(0.9rem, 1.9vw, 2.2rem)", 
+               fontWeight: 300, 
+               lineHeight: 1.1, 
+               color: "rgba(255,255,255,0.95)",
+               margin: 0,
+               letterSpacing: "0.02em",
+               textAlign: "center",
+             }}>
+               A escrita permanece como uma das origens mais profundas do meu processo criativo.
+             </h3>
+          </div>
+          
+          <div className="literary-container" style={{ width: "100%", overflow: "hidden" }}>
+             <p className="literary-subphrase" style={{ 
+               fontFamily: "var(--font-cormorant)", 
+               fontSize: "clamp(0.8rem, 1.3vw, 1.4rem)", 
+               fontWeight: 300, 
+               fontStyle: "italic",
+               lineHeight: 1.2, 
+               color: "rgba(184,151,90,0.75)",
+               margin: "8px 0 0",
+               letterSpacing: "0.01em",
+               textAlign: "center",
+             }}>
+               Parte dessa trajetória foi reconhecida por premiações literárias e iniciativas culturais.
+             </p>
+          </div>
+        </motion.div>
+
+        {/* Signature Banner */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-10%" }}
+          viewport={{ once: true }}
           transition={{ duration: 1.5, delay: 0.6 }}
           style={{
-            marginTop: "clamp(80px, 8vw, 140px)",
+            marginTop: "clamp(60px, 10vw, 140px)",
             width: "100%",
             position: "relative",
             display: "flex",
             justifyContent: "center",
           }}
         >
-          {/* Subtle line above */}
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: "10%",
-              right: "10%",
-              height: "1px",
-              background: "linear-gradient(90deg, transparent, rgba(184,151,90,0.3), transparent)",
-            }}
-          />
+          <div style={{ position: "absolute", top: 0, left: "10%", right: "10%", height: "1px", background: "linear-gradient(90deg, transparent, rgba(184,151,90,0.2), transparent)" }} />
 
           <motion.div
-            whileHover="hovered"
-            style={{
-              paddingTop: "40px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: "12px",
+            whileHover={{ scale: 1.03 }}
+            transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
+            style={{ 
+              paddingTop: "40px", 
+              display: "flex", 
+              flexDirection: "column", 
+              alignItems: "center", 
+              gap: "12px", 
               textAlign: "center",
-              cursor: "crosshair",
+              cursor: "default"
             }}
           >
-            {/* Top: Name section */}
             <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-              <motion.span
-                variants={{ hovered: { letterSpacing: "0.08em" } }}
-                transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-                style={{
-                  fontFamily: "var(--font-cormorant)",
-                  fontSize: "clamp(24px, 3.5vw, 42px)",
-                  fontWeight: 300,
-                  color: "rgba(255,255,255,0.9)",
-                }}
-              >
+              <span style={{ fontFamily: "var(--font-cormorant)", fontSize: "clamp(20px, 3.5vw, 42px)", fontWeight: 300, color: "rgba(255,255,255,0.9)" }}>
                 Maria Eduarda Veiga
-              </motion.span>
-              <span style={{ fontSize: "12px", color: "rgba(184,151,90,0.6)" }}>
-                ·
               </span>
-              <motion.span
-                variants={{ hovered: { letterSpacing: "0.08em" } }}
-                transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-                style={{
-                  fontFamily: "var(--font-cormorant)",
-                  fontSize: "clamp(24px, 3.5vw, 42px)",
-                  fontWeight: 300,
-                  color: "rgba(255,255,255,0.9)",
+              <span style={{ fontSize: "12px", color: "rgba(184,151,90,0.6)" }}>·</span>
+              <motion.a 
+                href="https://www.instagram.com/m4du.oficial"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ 
+                  fontFamily: "var(--font-cormorant)", 
+                  fontSize: "clamp(20px, 3.5vw, 42px)", 
+                  fontWeight: 300, 
+                  color: "rgba(255,255,255,0.9)", 
                   fontStyle: "italic",
+                  textDecoration: "none",
+                  transition: "color 0.3s ease"
                 }}
+                whileHover={{ color: "#b8975a" }}
               >
                 Madu
-              </motion.span>
+              </motion.a>
             </div>
-
-            {/* Middle: Elegant Line */}
-            <motion.div
-              variants={{ hovered: { width: "100%", opacity: 1 } }}
-              transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-              style={{
-                width: "60%",
-                height: "1px",
-                background: "linear-gradient(90deg, transparent, rgba(184,151,90,0.5), transparent)",
-                opacity: 0.5,
-                marginTop: "4px",
-                marginBottom: "4px",
-              }}
-            />
-
-            {/* Bottom: Subtitle */}
-            <motion.span
-              variants={{ hovered: { letterSpacing: "0.22em", color: "rgba(184,151,90,1)" } }}
-              transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-              style={{
-                fontFamily: "var(--font-inter)",
-                fontSize: "clamp(9px, 1.1vw, 12px)",
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
-                color: "rgba(184,151,90,0.7)",
-                fontWeight: 300,
-              }}
-            >
+            <div style={{ width: "60px", height: "1px", background: "rgba(184,151,90,0.4)" }} />
+            <span style={{ fontFamily: "var(--font-inter)", fontSize: "clamp(8px, 1.1vw, 12px)", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(184,151,90,0.7)", fontWeight: 300 }}>
               Posicionamento & Estratégia Digital
-            </motion.span>
-
-            {/* Specialties line */}
-            <motion.span
-              variants={{ hovered: { color: "rgba(255,255,255,0.5)" } }}
-              transition={{ duration: 0.6 }}
-              style={{
-                fontFamily: "var(--font-inter)",
-                fontSize: "clamp(8px, 0.8vw, 10px)",
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
-                color: "rgba(255,255,255,0.2)",
-                fontWeight: 300,
-                marginTop: "4px"
-              }}
+            </span>
+            <span 
+              className="shimmer-reflex"
+              style={{ fontFamily: "var(--font-inter)", fontSize: "clamp(7px, 0.8vw, 10px)", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 300 }}
             >
               Estratégia · Conteúdo · Design · Copywriting · Social Media · Desenvolvimento Web · Vídeo · IA Aplicada à Criação
-            </motion.span>
+            </span>
           </motion.div>
+        </motion.div>
+        {/* ─── NEW: Transitional Scroll Indicator (Link to Globe) ─── */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.5, delay: 1 }}
+          style={{
+            marginTop: "clamp(120px, 18vw, 220px)", // MOVED LOWER
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "20px",
+            width: "100%",
+            paddingBottom: "100px" // MORE BREATHING ROOM
+          }}
+        >
+          <span style={{ 
+            fontFamily: "var(--font-inter)", 
+            fontSize: "clamp(8px, 1vw, 10px)", 
+            letterSpacing: "0.4em", 
+            textTransform: "uppercase", 
+            color: "rgba(184,151,90,0.45)",
+            fontWeight: 300
+          }}>
+            Explorar Conexões
+          </span>
+          
+          <div style={{ position: "relative", height: "60px", width: "1px" }}>
+            <motion.div 
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "1px",
+                height: "100%",
+                background: "linear-gradient(to bottom, rgba(184,151,90,0.5), transparent)"
+              }}
+            />
+            <motion.div 
+              animate={{ y: [0, 40, 0], opacity: [0.2, 1, 0.2] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: "-1px",
+                width: "3px",
+                height: "3px",
+                borderRadius: "50%",
+                background: "#b8975a",
+                boxShadow: "0 0 10px rgba(184,151,90,0.8)"
+              }}
+            />
+          </div>
         </motion.div>
       </div>
     </section>
