@@ -82,7 +82,7 @@ export default function FooterCTA() {
         </div>
 
         {/* Right: Credits */}
-        <div className="flex-1 flex flex-col items-center md:items-end gap-1 text-center md:text-right">
+        <div className="flex-1 flex flex-col items-center md:items-end gap-1 text-center md:text-right md:pr-12">
            <span style={{ fontFamily: "var(--font-inter)", fontSize: "0.55rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.45)" }}>
              © {currentYear} · TODOS OS DIREITOS RESERVADOS
            </span>
