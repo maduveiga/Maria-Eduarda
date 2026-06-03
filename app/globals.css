@@ -286,18 +286,19 @@ body {
   display: inline-block;
   background: linear-gradient(
     90deg,
-    rgba(184, 151, 90, 0.45) 0%,
-    rgba(184, 151, 90, 0.45) 30%,
-    rgba(255, 255, 255, 0.9) 50%,
-    rgba(184, 151, 90, 0.45) 70%,
-    rgba(184, 151, 90, 0.45) 100%
+    rgba(184, 151, 90, 0.4) 0%,
+    rgba(184, 151, 90, 0.4) 40%,
+    rgba(255, 255, 255, 0.95) 50%,
+    rgba(184, 151, 90, 0.4) 60%,
+    rgba(184, 151, 90, 0.4) 100%
   );
-  background-size: 200% auto;
+  background-size: 300% 100%;
   color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
+  -webkit-text-fill-color: transparent;
   /* Animação lenta e elegante */
-  animation: shimmer 10s linear infinite;
+  animation: shimmer 12s linear infinite;
 }
 
 /* ─── Performance: Reduce motion ─────────────────────────────────────────── */

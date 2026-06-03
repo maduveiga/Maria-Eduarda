@@ -387,7 +387,7 @@ export default function CreativeSignature() {
             </span>
             <span 
               className="shimmer-service-v2"
-              style={{ fontFamily: "var(--font-inter)", fontSize: "clamp(7px, 0.8vw, 10px)", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 300 }}
+              style={{ fontFamily: "var(--font-inter)", fontSize: "clamp(7px, 0.8vw, 10px)", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 300, WebkitTextFillColor: "transparent" }}
             >
               Estratégia · Conteúdo · Design · Copywriting · Social Media · Desenvolvimento Web · Vídeo · IA Aplicada à Criação
             </span>
