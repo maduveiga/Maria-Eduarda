@@ -386,8 +386,7 @@ export default function CreativeSignature() {
               Posicionamento & Estratégia Digital
             </span>
             <span 
-              className="shimmer-v3-modelo"
-              style={{ fontFamily: "var(--font-inter)", fontSize: "clamp(7px, 0.8vw, 10px)", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 300, WebkitTextFillColor: "transparent" }}
+              style={{ fontFamily: "var(--font-inter)", fontSize: "clamp(7px, 0.8vw, 10px)", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 400, color: "rgba(235, 230, 215, 0.95)" }}
             >
               Estratégia · Conteúdo · Design · Copywriting · Social Media · Desenvolvimento Web · Vídeo · IA Aplicada à Criação
             </span>
