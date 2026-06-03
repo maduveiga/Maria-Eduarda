@@ -281,24 +281,23 @@ body {
   }
 }
 
-/* ─── Shimmer Service V2 (Mais visível e elegante) ────────────────────────── */
+/* ─── Shimmer Service V2 (Versão Ultra-Visível - Baseada no vídeo MODELO) ─ */
 .shimmer-service-v2 {
   display: inline-block;
   background: linear-gradient(
-    90deg,
-    rgba(184, 151, 90, 0.4) 0%,
-    rgba(184, 151, 90, 0.4) 40%,
-    rgba(255, 255, 255, 0.95) 50%,
-    rgba(184, 151, 90, 0.4) 60%,
-    rgba(184, 151, 90, 0.4) 100%
+    120deg,
+    rgba(184, 151, 90, 0.3) 0%,
+    rgba(184, 151, 90, 0.3) 42%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(184, 151, 90, 0.3) 58%,
+    rgba(184, 151, 90, 0.3) 100%
   );
-  background-size: 300% 100%;
+  background-size: 200% 100%;
   color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  /* Animação lenta e elegante */
-  animation: shimmer 12s linear infinite;
+  animation: shimmer 6s linear infinite;
 }
 
 /* ─── Performance: Reduce motion ─────────────────────────────────────────── */
