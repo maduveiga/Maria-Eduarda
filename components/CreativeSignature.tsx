@@ -467,6 +467,54 @@ export default function CreativeSignature() {
             </motion.span>
           </motion.div>
         </motion.div>
+
+        {/* ═══ NEW: Literary Signature Block (Alteration 2) ═══ */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
+          style={{
+            marginTop: "clamp(120px, 12vw, 200px)",
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "24px",
+            padding: "0 24px",
+          }}
+        >
+          <div style={{ width: "40px", height: "1px", background: "linear-gradient(90deg, transparent, rgba(184,151,90,0.5), transparent)", marginBottom: "8px" }} />
+          
+          <h3 style={{ 
+            fontFamily: "var(--font-cormorant)", 
+            fontSize: "clamp(1.5rem, 2.8vw, 2.2rem)", 
+            fontWeight: 300, 
+            lineHeight: 1.4, 
+            color: "rgba(255,255,255,0.95)",
+            margin: 0,
+            maxWidth: "800px"
+          }}>
+            A escrita permanece como uma das origens mais profundas do meu processo criativo.
+          </h3>
+          
+          <p style={{ 
+            fontFamily: "var(--font-cormorant)", 
+            fontSize: "clamp(1.1rem, 1.6vw, 1.35rem)", 
+            fontWeight: 300, 
+            fontStyle: "italic",
+            lineHeight: 1.6, 
+            color: "rgba(184,151,90,0.75)",
+            margin: 0,
+            maxWidth: "700px"
+          }}>
+            Parte dessa trajetória foi reconhecida por premiações literárias e iniciativas culturais.
+          </p>
+
+          <div style={{ marginTop: "16px", letterSpacing: "0.8em", color: "rgba(255,255,255,0.08)", fontSize: "0.6rem", textTransform: "uppercase" }}>
+            · · ·
+          </div>
+        </motion.div>
       </div>
     </section>
   );

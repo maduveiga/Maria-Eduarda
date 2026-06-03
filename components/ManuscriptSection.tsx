@@ -44,14 +44,13 @@ const CONTACTS = [
 export default function ManuscriptSection() {
   const containerRef = useRef<HTMLElement>(null);
   
-  // Using "start start" to "end end" ensures the 0-1 range matches the sticky phase perfectly
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
   const scrollProgress = useSpring(scrollYProgress, {
-    stiffness: 100, // Very responsive
+    stiffness: 100,
     damping: 40
   });
 
@@ -59,14 +58,19 @@ export default function ManuscriptSection() {
   const globeOpacity = useTransform(scrollProgress, [0, 0.05], [0, 1]);
   const atmosphereOpacity = useTransform(scrollProgress, [0, 0.1], [0, 1]);
 
-  // Phase 1: The Focal Phrase (stays longer)
-  const phraseOpacity = useTransform(scrollProgress, [0.05, 0.15, 0.35, 0.45], [0, 1, 1, 0]);
-  const phraseY = useTransform(scrollProgress, [0.05, 0.15], [30, 0]);
-
-  // Phase 2: Staggered Contacts (Revealed through the long scroll)
-  const c1Opacity = useTransform(scrollProgress, [0.48, 0.55, 0.65, 0.70], [0, 1, 1, 0]);
-  const c2Opacity = useTransform(scrollProgress, [0.70, 0.77, 0.87, 0.92], [0, 1, 1, 0]);
-  const c3Opacity = useTransform(scrollProgress, [0.92, 0.96, 0.99, 1.00], [0, 1, 1, 1]); // Stays till end
+  // Phase Granularity (8 Items Flow)
+  // Logic: 0.1 to 0.95 range divided for 8 items (~0.1 per item)
+  
+  const phrase1Opacity = useTransform(scrollProgress, [0.08, 0.12, 0.18, 0.22], [0, 1, 1, 0]);
+  const phrase2Opacity = useTransform(scrollProgress, [0.22, 0.26, 0.32, 0.36], [0, 1, 1, 0]);
+  const waOpacity = useTransform(scrollProgress, [0.36, 0.40, 0.46, 0.50], [0, 1, 1, 0]);
+  const phrase3Opacity = useTransform(scrollProgress, [0.50, 0.54, 0.60, 0.64], [0, 1, 1, 0]);
+  const igOpacity = useTransform(scrollProgress, [0.64, 0.68, 0.74, 0.78], [0, 1, 1, 0]);
+  const phrase4Opacity = useTransform(scrollProgress, [0.78, 0.82, 0.88, 0.92], [0, 1, 1, 0]);
+  const mailOpacity = useTransform(scrollProgress, [0.92, 0.94, 0.96, 0.98], [0, 1, 1, 0]);
+  
+  const ctaOpacity = useTransform(scrollProgress, [0.96, 0.99], [0, 1]);
+  const ctaY = useTransform(scrollProgress, [0.96, 0.99], [20, 0]);
 
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
@@ -86,9 +90,9 @@ export default function ManuscriptSection() {
       style={{
         position: "relative",
         background: "#000000",
-        minHeight: "700vh", // Deep cinematic scroll depth
+        minHeight: "800vh", // Slightly deeper for the new 8-item flow
         marginTop: "-2px",
-        overflow: "visible", // Critical for sticky to work correctly without clipping
+        overflow: "visible",
       }}
     >
       <div
@@ -101,10 +105,9 @@ export default function ManuscriptSection() {
           alignItems: "center",
           justifyContent: "center",
           zIndex: 1,
-          overflow: "hidden", // We clip only the sticky div content
+          overflow: "hidden",
         }}
       >
-        {/* The Globe */}
         <motion.div
           style={{
             opacity: globeOpacity,
@@ -123,7 +126,6 @@ export default function ManuscriptSection() {
           />
         </motion.div>
 
-        {/* Atmosphere Overlay */}
         <motion.div
           style={{
             position: "absolute",
@@ -134,93 +136,118 @@ export default function ManuscriptSection() {
           }}
         />
 
-        {/* Content Stages */}
         <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", padding: "0 24px" }}>
           
-          {/* STAGE 1: Focal Phrase */}
-          <motion.div
-            style={{
-              opacity: phraseOpacity,
-              y: phraseY,
-              textAlign: "center",
-              maxWidth: "900px",
-              position: "absolute",
-              zIndex: 10
-            }}
-          >
-            <h2 style={{ 
-              fontFamily: "var(--font-cormorant)", 
-              fontSize: "clamp(2.5rem, 6vw, 5rem)", 
-              fontWeight: 300, 
-              color: "#fff", 
-              margin: 0,
-              lineHeight: 1.15,
-            }}>
-              Toda criação começa
-              <br />
-              <span style={{ color: "rgba(184,151,90,0.9)", fontStyle: "italic" }}>
-                por uma conexão verdadeira.
-              </span>
+          {/* ITEM 1: PHRASE */}
+          <motion.div style={{ opacity: phrase1Opacity, textAlign: "center", maxWidth: "900px", position: "absolute", zIndex: 10 }}>
+            <h2 style={{ fontFamily: "var(--font-cormorant)", fontSize: "clamp(2.2rem, 5vw, 4.2rem)", fontWeight: 300, color: "#fff", margin: 0, lineHeight: 1.15 }}>
+              Toda criação começa<br />
+              <span style={{ color: "rgba(184,151,90,0.9)", fontStyle: "italic" }}>por uma conexão verdadeira.</span>
             </h2>
           </motion.div>
 
-          {/* STAGE 2: Contacts Sequential Reveal */}
-          <div style={{ position: "absolute", width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            {[
-              { ...CONTACTS[0], opacity: c1Opacity },
-              { ...CONTACTS[1], opacity: c2Opacity },
-              { ...CONTACTS[2], opacity: c3Opacity },
-            ].map((contact, i) => (
-              <motion.a
-                key={contact.label}
-                href={contact.href}
+          {/* ITEM 2: PHRASE */}
+          <motion.div style={{ opacity: phrase2Opacity, textAlign: "center", maxWidth: "900px", position: "absolute", zIndex: 10 }}>
+            <h2 style={{ fontFamily: "var(--font-cormorant)", fontSize: "clamp(2.2rem, 5vw, 4.2rem)", fontWeight: 300, color: "#fff", margin: 0, lineHeight: 1.15 }}>
+              Escuta antes de<br />
+              <span style={{ color: "rgba(184,151,90,0.9)", fontStyle: "italic" }}>estratégia.</span>
+            </h2>
+          </motion.div>
+
+          {/* ITEM 3: WHATSAPP (SECONDARY) */}
+          <motion.a 
+            href={CONTACTS[0].href} target="_blank" rel="noopener noreferrer"
+            style={{ opacity: waOpacity, position: "absolute", display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", textDecoration: "none" }}
+          >
+            <div style={{ padding: "20px", borderRadius: "50%", border: "1px solid rgba(184,151,90,0.2)", background: "rgba(0,0,0,0.3)" }}>
+              {CONTACTS[0].icon}
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <span style={{ display: "block", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.4em", color: "rgba(184,151,90,0.6)", marginBottom: "8px" }}>{CONTACTS[0].label}</span>
+              <span style={{ fontFamily: "var(--font-cormorant)", fontSize: "clamp(1.5rem, 3.5vw, 2.5rem)", fontWeight: 300, color: "#fff" }}>{CONTACTS[0].value}</span>
+            </div>
+          </motion.a>
+
+          {/* ITEM 4: PHRASE */}
+          <motion.div style={{ opacity: phrase3Opacity, textAlign: "center", maxWidth: "900px", position: "absolute", zIndex: 10 }}>
+            <h2 style={{ fontFamily: "var(--font-cormorant)", fontSize: "clamp(2.2rem, 5vw, 4.2rem)", fontWeight: 300, color: "#fff", margin: 0, lineHeight: 1.15 }}>
+              Cada detalhe<br />
+              <span style={{ color: "rgba(184,151,90,0.9)", fontStyle: "italic" }}>comunica.</span>
+            </h2>
+          </motion.div>
+
+          {/* ITEM 5: INSTAGRAM (SECONDARY) */}
+          <motion.a 
+            href={CONTACTS[2].href} target="_blank" rel="noopener noreferrer"
+            style={{ opacity: igOpacity, position: "absolute", display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", textDecoration: "none" }}
+          >
+            <div style={{ padding: "20px", borderRadius: "50%", border: "1px solid rgba(184,151,90,0.2)", background: "rgba(0,0,0,0.3)" }}>
+              {CONTACTS[2].icon}
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <span style={{ display: "block", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.4em", color: "rgba(184,151,90,0.6)", marginBottom: "8px" }}>{CONTACTS[2].label}</span>
+              <span style={{ fontFamily: "var(--font-cormorant)", fontSize: "clamp(1.5rem, 3.5vw, 2.5rem)", fontWeight: 300, color: "#fff" }}>{CONTACTS[2].value}</span>
+            </div>
+          </motion.a>
+
+          {/* ITEM 6: PHRASE */}
+          <motion.div style={{ opacity: phrase4Opacity, textAlign: "center", maxWidth: "900px", position: "absolute", zIndex: 10 }}>
+            <h2 style={{ fontFamily: "var(--font-cormorant)", fontSize: "clamp(2.2rem, 5vw, 4.2rem)", fontWeight: 300, color: "#fff", margin: 0, lineHeight: 1.15 }}>
+              Direção antes do<br />
+              <span style={{ color: "rgba(184,151,90,0.9)", fontStyle: "italic" }}>movimento.</span>
+            </h2>
+          </motion.div>
+
+          {/* ITEM 7: E-MAIL (SECONDARY) */}
+          <motion.a 
+            href={CONTACTS[1].href} target="_blank" rel="noopener noreferrer"
+            style={{ opacity: mailOpacity, position: "absolute", display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", textDecoration: "none" }}
+          >
+            <div style={{ padding: "20px", borderRadius: "50%", border: "1px solid rgba(184,151,90,0.2)", background: "rgba(0,0,0,0.3)" }}>
+              {CONTACTS[1].icon}
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <span style={{ display: "block", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.4em", color: "rgba(184,151,90,0.6)", marginBottom: "8px" }}>{CONTACTS[1].label}</span>
+              <span style={{ fontFamily: "var(--font-cormorant)", fontSize: "clamp(1.5rem, 3.5vw, 2.5rem)", fontWeight: 300, color: "#fff" }}>{CONTACTS[1].value}</span>
+            </div>
+          </motion.a>
+
+          {/* ITEM 8: CTA FINAL */}
+          <motion.div
+            style={{
+              opacity: ctaOpacity,
+              y: ctaY,
+              position: "absolute",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "24px"
+            }}
+          >
+            <motion.a
+                href="https://wa.me/5547989192263"
                 target="_blank"
                 rel="noopener noreferrer"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 style={{
-                  opacity: contact.opacity,
-                  position: "absolute",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: "24px",
+                  padding: "16px 44px",
+                  borderRadius: "40px",
+                  background: "linear-gradient(145deg, #111111, #000000)",
+                  border: "1px solid rgba(184,151,90,0.4)",
+                  color: "#fff",
+                  fontFamily: "var(--font-inter)",
+                  fontSize: "0.72rem",
+                  fontWeight: 500,
+                  letterSpacing: "0.22em",
+                  textTransform: "uppercase",
                   textDecoration: "none",
-                  pointerEvents: "auto",
+                  boxShadow: "0 15px 35px rgba(0,0,0,0.6)",
                 }}
-              >
-                <div style={{ 
-                  padding: "24px", 
-                  borderRadius: "50%", 
-                  border: "1px solid rgba(184,151,90,0.3)", 
-                  background: "rgba(0,0,0,0.5)",
-                  display: "flex", 
-                  alignItems: "center", 
-                  justifyContent: "center",
-                }}>
-                  {contact.icon}
-                </div>
-                <div style={{ textAlign: "center" }}>
-                  <span style={{ 
-                    display: "block", 
-                    fontSize: "12px", 
-                    textTransform: "uppercase", 
-                    letterSpacing: "0.5em", 
-                    color: "rgba(184,151,90,0.7)", 
-                    marginBottom: "12px" 
-                  }}>
-                    {contact.label}
-                  </span>
-                  <span style={{ 
-                    fontFamily: "var(--font-cormorant)", 
-                    fontSize: "clamp(1.8rem, 4vw, 3.2rem)", 
-                    fontWeight: 300, 
-                    color: "#fff" 
-                  }}>
-                    {contact.value}
-                  </span>
-                </div>
-              </motion.a>
-            ))}
-          </div>
+            >
+                Iniciar uma conexão com a Madu
+            </motion.a>
+          </motion.div>
 
         </div>
       </div>

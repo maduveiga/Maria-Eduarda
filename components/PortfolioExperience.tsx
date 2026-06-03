@@ -361,11 +361,8 @@ export default function PortfolioExperience() {
               margin: 0,
               color: "rgba(184, 151, 90, 0.75)" // Reverted to golden tone
             }}>
-              Vamos transmitir uma identidade<br />que permaneça além do tempo?
+              Existe uma versão mais valiosa da sua marca.
             </h2>
-            <p style={{ fontFamily: "var(--font-cormorant)", fontSize: "clamp(1rem, 1.8vw, 1.5rem)", fontWeight: 300, fontStyle: "italic", color: "rgba(240,240,240,0.18)", margin: 0, letterSpacing: "0.02em" }}>
-              Shall we transmit an identity that endures beyond time?
-            </p>
           </div>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
             <p style={{ 
@@ -377,10 +374,7 @@ export default function PortfolioExperience() {
               lineHeight: 1.6,
               margin: 0
             }}>
-              Seu novo posicionamento está a uma <span style={{ color: "rgba(184,151,90,0.7)" }}>conexão de distância</span>.
-            </p>
-            <p style={{ fontFamily: "var(--font-inter)", fontSize: "clamp(0.7rem, 0.9vw, 0.8rem)", color: "rgba(240,240,240,0.15)", letterSpacing: "0.05em", fontStyle: "italic", margin: 0 }}>
-              Your new positioning is one connection away.
+              Ela pode estar a uma <span style={{ color: "rgba(184,151,90,0.7)" }}>conversa de distância</span>.
             </p>
           </div>
           
