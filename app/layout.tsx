@@ -16,13 +16,13 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "MADU — Luxury Cinematic Experience",
+  title: "Maria Eduarda Veiga",
   description:
-    "An ultra-premium scroll-driven cinematic experience. A digital object revealed through movement.",
-  keywords: ["luxury", "cinematic", "immersive", "experience", "scroll"],
+    "Estrategista Digital & Direção Criativa. Criando experiências digitais com precisão, estética premium e profundidade estratégica.",
+  keywords: ["Maria Eduarda Veiga", "Madu", "Estratégia Digital", "Design Premium", "Portfólio", "Direção Criativa"],
   openGraph: {
-    title: "MADU — Luxury Cinematic Experience",
-    description: "A digital object revealed through movement.",
+    title: "Maria Eduarda Veiga",
+    description: "Estrategista Digital & Direção Criativa.",
     type: "website",
   },
 };
@@ -34,7 +34,7 @@ export default function RootLayout({
 }) {
   return (
     <html
-      lang="en"
+      lang="pt-BR"
       className={`${inter.variable} ${cormorant.variable}`}
       suppressHydrationWarning
     >
