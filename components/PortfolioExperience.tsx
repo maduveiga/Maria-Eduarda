@@ -88,35 +88,35 @@ function ProjectFrame({ project, index }: { project: typeof PROJECTS[0]; index: 
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // Lead trigger for the component block
-  const isInView = useInView(ref, { margin: "400px 0px", once: true });
+  // ── Sincronização e Carregamento Robusto ───────────────────────────
+  // Aumentamos a margem para 1000px para carregar bem antes do usuário chegar
+  const isInView = useInView(ref, { margin: "1000px 0px", once: true });
   const isFlipped = useInView(ref, { margin: "-10% 0px" });
 
-  // OPTIMIZATION: Staggered network loading — mobile usa stagger maior para não saturar
+  // Carregamento instantâneo/agressivo conforme solicitado
   useEffect(() => {
     if (isInView) {
-      const stagger = isMobile ? 500 : 200;
+      const stagger = 50; // Quase instantâneo
       const timer = setTimeout(() => {
         setShouldLoad(true);
       }, index * stagger);
       return () => clearTimeout(timer);
     }
-  }, [isInView, index, isMobile]);
+  }, [isInView, index]);
 
-  const gradients = [
-    "linear-gradient(135deg, #000000 0%, #120f09 40%, #000000 100%)",
-    "linear-gradient(135deg, #000000 0%, #0c1014 40%, #000000 100%)",
-    "linear-gradient(135deg, #000000 0%, #0f0f0a 40%, #000000 100%)",
-    "linear-gradient(135deg, #000000 0%, #120a09 40%, #000000 100%)",
-  ];
+  // Constantes de escala para evitar o efeito "zoom/desproporção"
+  // Simulamos uma tela desktop (1280px) dentro do card
+  const virtualWidth = 1280;
+  const aspectRatio = 16/10;
+  const virtualHeight = virtualWidth / aspectRatio;
 
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-15%" }} 
-      transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }} 
+      viewport={{ once: true, margin: "-10%" }} 
+      transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1] }} 
       style={{ display: "flex", flexDirection: "column", gap: "20px", width: "100%" }}
       onMouseEnter={() => !isMobile && setHovered(true)}
       onMouseLeave={() => !isMobile && setHovered(false)}
@@ -126,47 +126,57 @@ function ProjectFrame({ project, index }: { project: typeof PROJECTS[0]; index: 
           position: "relative",
           width: "100%",
           aspectRatio: "16/10",
-          borderRadius: "12px",
+          borderRadius: "14px",
           overflow: "hidden",
-          transition: "all 0.6s cubic-bezier(0.19, 1, 0.22, 1)",
-          perspective: isMobile ? "none" : "1200px"
+          transition: "all 0.6s var(--ease-silk)",
+          perspective: isMobile ? "none" : "1500px",
+          background: "#080808",
+          boxShadow: "0 30px 60px -20px rgba(0,0,0,0.8), 0 0 0 1px rgba(184,151,90,0.08)"
         }}
       >
         {isMobile ? (
-          /* ── MOBILE: Sem 3D flip — iframe direto, sem nome duplicado inside ── */
-          <div style={{ width: "100%", height: "100%", position: "relative", background: gradients[index % 4], borderRadius: "12px", border: "1px solid rgba(184,151,90,0.15)" }}>
-            {/* Placeholder minimalista — sem nome (já aparece abaixo do card) */}
+          /* ── MOBILE: Exibição Direta com Escala Virtual (Evita Zoom) ── */
+          <div style={{ width: "100%", height: "100%", position: "relative", overflow: "hidden" }}>
             {!iframeLoaded && (
               <div style={{ 
                 position: "absolute", inset: 0,
-                background: gradients[index % 4],
+                background: "#0a0a0a",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                borderRadius: "12px", zIndex: 2
+                zIndex: 2
               }}>
-                {/* Indicador de loading sutil — apenas um ponto dourado pulsando */}
                 <div style={{
-                  width: "6px", height: "6px", borderRadius: "50%",
-                  background: "rgba(184,151,90,0.4)",
-                  boxShadow: "0 0 12px rgba(184,151,90,0.3)",
-                  animation: "pulse 1.8s ease-in-out infinite",
+                  width: "8px", height: "8px", borderRadius: "50%",
+                  background: "rgba(184,151,90,0.6)",
+                  boxShadow: "0 0 15px rgba(184,151,90,0.4)",
+                  animation: "pulse 1.5s ease-in-out infinite",
                 }} />
               </div>
             )}
+            
             {shouldLoad && (
-              <iframe 
-                src={project.url} 
-                title={project.name} 
-                loading="lazy" 
-                onLoad={() => setIframeLoaded(true)}
-                style={{ 
-                  width: "100%", height: "100%", border: "none", borderRadius: "12px",
-                  opacity: iframeLoaded ? 1 : 0, 
-                  transition: "opacity 1s ease-in-out",
-                  pointerEvents: "none"
-                }}
-              />
+              <div style={{ 
+                width: `${virtualWidth}px`, 
+                height: `${virtualHeight}px`,
+                transform: `scale(${ (ref.current?.offsetWidth || 350) / virtualWidth })`,
+                transformOrigin: "top left",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                pointerEvents: "none"
+              }}>
+                <iframe 
+                  src={project.url} 
+                  title={project.name} 
+                  onLoad={() => setIframeLoaded(true)}
+                  style={{ 
+                    width: "100%", height: "100%", border: "none",
+                    opacity: iframeLoaded ? 1 : 0, 
+                    transition: "opacity 0.6s ease"
+                  }}
+                />
+              </div>
             )}
-            {/* Overlay + link — gradiente leve para não escurecer demais */}
+
             <a 
               href={project.url} 
               target="_blank" 
@@ -174,93 +184,102 @@ function ProjectFrame({ project, index }: { project: typeof PROJECTS[0]; index: 
               style={{
                 position: "absolute", inset: 0, zIndex: 10,
                 display: "flex", alignItems: "flex-end", justifyContent: "center",
-                padding: "16px",
-                background: "linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 55%)",
-                textDecoration: "none",
-                borderRadius: "12px",
+                padding: "24px",
+                background: "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 40%)",
+                textDecoration: "none"
               }}
             >
               <span style={{
-                padding: "7px 20px", background: "rgba(0,0,0,0.4)",
-                border: "1px solid rgba(184,151,90,0.28)", borderRadius: "30px",
-                color: "rgba(184,151,90,0.85)", fontFamily: "var(--font-inter)",
-                fontSize: "0.58rem", fontWeight: 400, letterSpacing: "0.22em",
-                textTransform: "uppercase", backdropFilter: "blur(4px)",
+                padding: "10px 24px", background: "rgba(0,0,0,0.7)",
+                border: "1px solid rgba(184,151,90,0.4)", borderRadius: "30px",
+                color: "#fff", fontFamily: "var(--font-inter)",
+                fontSize: "0.62rem", fontWeight: 400, letterSpacing: "0.2em",
+                textTransform: "uppercase", backdropFilter: "blur(8px)",
               }}>
                 Ver Projeto
               </span>
             </a>
           </div>
         ) : (
-          /* ── DESKTOP: Flip card original ── */
+          /* ── DESKTOP: Flip Card com Escala Virtual ── */
           <motion.div 
-            animate={{ rotateY: isFlipped ? 180 : 0, scale: hovered ? 1.02 : 1 }}
-            transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
+            animate={{ rotateY: isFlipped ? 180 : 0, scale: hovered ? 1.03 : 1 }}
+            transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
             style={{ width: "100%", height: "100%", position: "relative", transformStyle: "preserve-3d" }}
           >
-            {/* FRONT */}
+            {/* FRONT (Capa do Card) */}
             <div style={{ 
               backfaceVisibility: "hidden", position: "absolute", inset: 0, 
-              borderRadius: "12px", background: gradients[index % 4],
+              borderRadius: "14px", background: "linear-gradient(135deg, #0a0a0a 0%, #151515 100%)",
               display: "flex", alignItems: "center", justifyContent: "center",
-              border: "1px solid rgba(255,255,255,0.03)",
-              overflow: "hidden"
+              border: "1px solid rgba(255,255,255,0.03)"
             }}>
                <div style={{ 
                  position: "absolute", inset: 0, 
-                 background: "radial-gradient(circle at 50% 50%, rgba(184,151,90,0.03) 0%, transparent 70%)" 
+                 background: "radial-gradient(circle at 50% 50%, rgba(184,151,90,0.05) 0%, transparent 70%)" 
                }} />
-               {/* Nome removido daqui para evitar poluição visual, já que aparece abaixo do card */}
+               <span style={{ fontFamily: "var(--font-inter)", fontSize: "0.6rem", letterSpacing: "0.3em", color: "rgba(184,151,90,0.4)", textTransform: "uppercase" }}>
+                 Visualizar Preview
+               </span>
             </div>
 
-            {/* BACK */}
+            {/* BACK (Preview do Site com Escala Desktop) */}
             <div style={{ 
               backfaceVisibility: "hidden", position: "absolute", inset: 0, 
-              borderRadius: "12px", overflow: "hidden", transform: "rotateY(180deg)", background: "#000",
+              borderRadius: "14px", overflow: "hidden", transform: "rotateY(180deg)", background: "#050505",
               border: "1px solid rgba(184,151,90,0.25)"
             }}>
               {!iframeLoaded && (
                 <div style={{ 
-                  position: "absolute", inset: 0, background: "#050505", 
-                  display: "flex", alignItems: "center", justifyContent: "center" 
+                  position: "absolute", inset: 0, background: "#0a0a0a", 
+                  display: "flex", alignItems: "center", justifyContent: "center", zIndex: 2
                 }}>
-                  <div className="shimmer-text" style={{ fontSize: "0.7rem", opacity: 0.3 }}>
-                    PRECISION LOADING...
+                  <div className="shimmer-text" style={{ fontSize: "0.6rem", opacity: 0.3, letterSpacing: "0.2em" }}>
+                    RENDERIZANDO...
                   </div>
                 </div>
               )}
-
+ 
               {shouldLoad && (
-                 <iframe 
-                   src={project.url} 
-                   title={project.name} 
-                   loading="lazy" 
-                   onLoad={() => setIframeLoaded(true)}
-                   style={{ 
-                     width: "100%", height: "100%", border: "none", 
-                     opacity: iframeLoaded ? 1 : 0, 
-                     transition: "opacity 0.8s ease-in-out", 
-                     pointerEvents: "none" 
-                   }}
-                 />
+                <div style={{ 
+                  width: `${virtualWidth}px`, 
+                  height: `${virtualHeight}px`,
+                  transform: `scale(${ (ref.current?.offsetWidth || 600) / virtualWidth })`,
+                  transformOrigin: "top left",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  pointerEvents: "none"
+                }}>
+                  <iframe 
+                    src={project.url} 
+                    title={project.name} 
+                    onLoad={() => setIframeLoaded(true)}
+                    style={{ 
+                      width: "100%", height: "100%", border: "none",
+                      opacity: iframeLoaded ? 1 : 0, 
+                      transition: "opacity 0.8s ease-in-out"
+                    }}
+                  />
+                </div>
               )}
               
               <motion.div
                 animate={{ opacity: hovered ? 1 : 0 }}
                 style={{
                   position: "absolute", inset: 0,
-                  background: "linear-gradient(to top, rgba(0,0,0,0.92) 0%, transparent 60%)",
+                  background: "linear-gradient(to top, rgba(0,0,0,0.95) 0%, transparent 50%)",
                   display: "flex", alignItems: "center", justifyContent: "center", padding: "20px", zIndex: 10
                 }}
               >
                  <motion.a href={project.url} target="_blank" rel="noopener noreferrer"
                     whileHover={{ scale: 1.05 }}
                     style={{
-                      padding: "12px 32px", background: "linear-gradient(135deg, #b8975a, #82693c)",
-                      borderRadius: "30px", color: "#fff", fontFamily: "var(--font-inter)", 
-                      fontSize: "0.68rem", fontWeight: 500, letterSpacing: "0.22em",
+                      padding: "14px 36px", background: "linear-gradient(135deg, #b8975a, #82693c)",
+                      borderRadius: "40px", color: "#fff", fontFamily: "var(--font-inter)", 
+                      fontSize: "0.7rem", fontWeight: 500, letterSpacing: "0.2em",
                       textTransform: "uppercase", textDecoration: "none", pointerEvents: "auto",
-                      boxShadow: "0 15px 30px rgba(0,0,0,0.5)"
+                      boxShadow: "0 20px 40px rgba(0,0,0,0.6)"
                     }}
                  >
                     Explorar Projeto
