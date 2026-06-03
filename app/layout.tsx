@@ -20,11 +20,23 @@ export const metadata: Metadata = {
   description:
     "Estrategista Digital & Direção Criativa. Criando experiências digitais com precisão, estética premium e profundidade estratégica.",
   keywords: ["Maria Eduarda Veiga", "Madu", "Estratégia Digital", "Design Premium", "Portfólio", "Direção Criativa"],
+  authors: [{ name: "Maria Eduarda Veiga" }],
   openGraph: {
     title: "Maria Eduarda Veiga",
-    description: "Estrategista Digital & Direção Criativa.",
+    description: "Estrategista Digital & Direção Criativa. Criando experiências digitais com precisão e estética premium.",
     type: "website",
+    locale: "pt_BR",
+    siteName: "Maria Eduarda Veiga",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Maria Eduarda Veiga",
+    description: "Estrategista Digital & Direção Criativa.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  }
 };
 
 export default function RootLayout({
