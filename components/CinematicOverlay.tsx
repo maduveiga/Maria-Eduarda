@@ -1,11 +1,21 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 /**
- * CinematicOverlay — versão limpa.
- * Mantém apenas o grain atmosférico muito sutil.
- * Vignette radial, glow dourado e scan lines REMOVIDOS (causavam manchas/sombras).
+ * CinematicOverlay — Otimizado para Mobile.
+ * Suaviza as sombras laterais em telas pequenas para não prejudicar a leitura.
  */
 export default function CinematicOverlay() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check, { passive: true });
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   return (
     <div
       style={{
@@ -16,27 +26,31 @@ export default function CinematicOverlay() {
       }}
       aria-hidden="true"
     >
-      {/* ── Sombra ESQUERDA ────────────────────────────── */}
+      {/* ── Sombra ESQUERDA (Mais sutil no mobile) ────────────────────────────── */}
       <div
         style={{
           position: "absolute",
           top: 0,
           bottom: 0,
           left: 0,
-          width: "20%",
-          background: "linear-gradient(to right, #000000 0%, transparent 100%)",
+          width: isMobile ? "8%" : "20%",
+          background: isMobile 
+            ? "linear-gradient(to right, rgba(0,0,0,0.5) 0%, transparent 100%)"
+            : "linear-gradient(to right, rgba(0,0,0,0.8) 0%, transparent 100%)",
         }}
       />
 
-      {/* ── Sombra DIREITA ─────────────────────────────── */}
+      {/* ── Sombra DIREITA (Mais sutil no mobile) ─────────────────────────────── */}
       <div
         style={{
           position: "absolute",
           top: 0,
           bottom: 0,
           right: 0,
-          width: "20%",
-          background: "linear-gradient(to left, #000000 0%, transparent 100%)",
+          width: isMobile ? "8%" : "20%",
+          background: isMobile 
+            ? "linear-gradient(to left, rgba(0,0,0,0.5) 0%, transparent 100%)"
+            : "linear-gradient(to left, rgba(0,0,0,0.8) 0%, transparent 100%)",
         }}
       />
 
@@ -51,7 +65,6 @@ export default function CinematicOverlay() {
           background: "linear-gradient(to top, #000000 0%, transparent 100%)",
         }}
       />
-
     </div>
   );
 }

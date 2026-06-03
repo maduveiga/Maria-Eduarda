@@ -29,12 +29,16 @@ html {
   scroll-behavior: auto; /* Lenis handles smooth scroll */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Elimina tap highlight delay em mobile */
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   background-color: var(--color-black);
   color: var(--color-white);
   overflow-x: hidden;
+  /* Otimização de scroll nativo em touch */
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ─── Selection ──────────────────────────────────────────────────────────── */
@@ -58,10 +62,7 @@ body {
   background: var(--color-gold-dim);
 }
 
-/* canvas-container e vignettes removidos — sem manchas no fundo */
-
 /* ─── Atmospheric Grain ─────────────────────────────────────────────────── */
-/* Única camada atmosférica — vignettes e cinema-glow removidos (causavam manchas) */
 .grain-overlay {
   position: fixed;
   inset: -200%;
@@ -122,7 +123,6 @@ body {
 .cinema-section {
   position: relative;
   background: var(--color-black);
-  /* z-index removido — sem canvas fixed, não há sobreposição */
 }
 
 /* ─── Scroll Progress Bar ────────────────────────────────────────────────── */
@@ -130,11 +130,11 @@ body {
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
   height: 1px;
   z-index: 100;
   background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
   transform-origin: left center;
-  transition: transform 0.1s linear;
 }
 
 /* ─── Loading Screen ─────────────────────────────────────────────────────── */
@@ -171,8 +171,6 @@ body {
   border-radius: 1px;
   transition: width 0.2s var(--ease-luxury);
 }
-
-
 
 /* ─── Keyframes ──────────────────────────────────────────────────────────── */
 @keyframes grain {
@@ -213,6 +211,11 @@ body {
   100% { background-position: 200% center; }
 }
 
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.6); }
+}
+
 .shimmer-text {
   background: linear-gradient(
     110deg,
@@ -228,24 +231,15 @@ body {
   animation: shimmer 8s linear infinite;
 }
 
-/* ─── Responsive Performance Overrides ───────────────────────────────────── */
+/* ─── Signature Grid ──────────────────────────────────────────────────────── */
+.signature-grid {
+  transition: all 0.6s var(--ease-silk);
+}
+
 @media (max-width: 1024px) {
   .signature-grid {
     grid-template-columns: 1fr !important;
     gap: 40px !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .text-display {
-    font-size: 2.8rem !important;
-  }
-  
-  .literary-phrase, .literary-subphrase {
-    white-space: normal !important;
-    text-align: center !important;
-    padding: 0 16px;
-    line-height: 1.4 !important;
   }
 }
 
@@ -260,16 +254,34 @@ body {
   }
 }
 
-.signature-grid {
-  transition: all 0.6s var(--ease-silk);
-}
-
+/* ─── Literary Phrases ────────────────────────────────────────────────────── */
 .literary-container {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+@media (max-width: 768px) {
+  .text-display {
+    font-size: 2.8rem !important;
+  }
+
+  .literary-phrase, .literary-subphrase {
+    white-space: normal !important;
+    text-align: center !important;
+    padding: 0 16px;
+    line-height: 1.4 !important;
+    letter-spacing: 0.01em !important;
+  }
+
+  /* Reduz grain em mobile — economiza GPU */
+  .grain-overlay {
+    opacity: 0.015;
+    animation: grain 12s steps(6) infinite; /* menos steps = menos repaints */
+  }
+}
+
+/* ─── Shimmer Reflex ──────────────────────────────────────────────────────── */
 .shimmer-reflex {
   display: inline-block;
   background: linear-gradient(
@@ -285,5 +297,19 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   animation: shimmer 5s linear infinite;
+}
+
+/* ─── Performance: Reduce motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .grain-overlay,
+  .shimmer-text,
+  .shimmer-reflex {
+    animation: none !important;
+  }
+
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }
 

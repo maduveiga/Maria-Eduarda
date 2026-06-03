@@ -12,6 +12,14 @@ const SCROLL_HEIGHT = "1000vh";
 
 export default function HeroScrollSequence() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 1024);
+    check();
+    window.addEventListener("resize", check, { passive: true });
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const { images, isLoaded, progress: loadProgress } = useImageSequencePreloader();
 
@@ -20,18 +28,6 @@ export default function HeroScrollSequence() {
     offset: ["start start", "end end"],
   });
 
-  /**
-   * DOIS valores de progresso para propósitos distintos:
-   *
-   * 1. rawProgress → passado ao SequenceCanvas.
-   *    O canvas tem seu próprio lerp interno e não precisa de spring.
-   *    Usar valor raw = máxima responsividade no alvo, suavidade controlada
-   *    pelo lerp cinematográfico do canvas.
-   *
-   * 2. uiProgress → para elementos UI (barra de progresso, textos, scroll indicator).
-   *    Spring leve e responsivo — sem o "peso" exagerado do mass:2.2 anterior.
-   *    stiffness:100 / damping:20 / mass:0.6 = resposta rápida sem jitter.
-   */
   const uiProgress = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 20,
@@ -48,9 +44,11 @@ export default function HeroScrollSequence() {
 
   const [isAtTop, setIsAtTop] = useState(true);
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    // Reappear if we are at the very beginning of the sequence
     setIsAtTop(latest < 0.05);
   });
+
+  // Letras do MADU para animação de surgimento letra-a-letra
+  const letters = ["M", "A", "D", "U"];
 
   return (
     <>
@@ -67,7 +65,7 @@ export default function HeroScrollSequence() {
         </span>
       </div>
 
-      {/* ── Progress bar (UI spring) ───────────────────────────────── */}
+      {/* ── Progress bar ───────────────────────────────────────────── */}
       <motion.div
         className="scroll-progress-bar"
         style={{ scaleX: uiProgress, transformOrigin: "left" }}
@@ -77,13 +75,13 @@ export default function HeroScrollSequence() {
       {/* ── Scroll indicator ───────────────────────────────────────── */}
       <ScrollIndicator visible={showScrollIndicator} />
 
-      {/* ── Grain overlay (fixo) ────────────────────────────────────── */}
+      {/* ── Grain overlay (fixo) ───────────────────────────────────── */}
       <CinematicOverlay />
 
-      {/* ── Textos scroll-driven (UI spring) ────────────────────────── */}
+      {/* ── Textos scroll-driven ──────────────────────────────────── */}
       <HeroTextLayers progress={uiProgress} rawProgress={scrollYProgress} />
 
-      {/* ── Hero title — Estático no centro, apenas fade-out via scroll ──────────────── */}
+      {/* ── Hero title — MADU ────────────────────────────────────── */}
       <motion.div
         className="hero-title-container"
         style={{
@@ -93,45 +91,105 @@ export default function HeroScrollSequence() {
           zIndex: 20,
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
+          // Mobile: alinha à esquerda com padding; Desktop: centraliza
+          alignItems: isMobile ? "flex-start" : "center",
+          justifyContent: isMobile ? "center" : "center",
+          paddingLeft: isMobile ? "clamp(32px, 12vw, 85px)" : "0",
           pointerEvents: "none",
         }}
       >
-          <div
-            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px" }}
-          >
-          <div
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: isMobile ? "flex-start" : "center",
+            gap: "16px",
+          }}
+        >
+          {/* Linha decorativa ouro — sutil */}
+          <motion.div
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={{ scaleX: 1, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.6, ease: [0.19, 1, 0.22, 1] }}
             style={{
-              width: "40px", height: "1px",
-              background: "linear-gradient(90deg, transparent, rgba(184,151,90,0.5), transparent)",
+              width: "32px",
+              height: "1px",
+              background: "linear-gradient(90deg, rgba(184,151,90,0.5), transparent)",
+              transformOrigin: "left",
             }}
           />
-          <span
-            style={{
-              fontFamily: "var(--font-cormorant)",
-              fontSize: "clamp(3rem, 8vw, 6rem)",
-              fontWeight: 300,
-              letterSpacing: "0.25em",
-              lineHeight: 1,
-              color: "rgba(184, 151, 90, 0.95)", // Static gold color
-            }}
-          >
-            MADU
-          </span>
+
+          {/* MADU — Efeito de surgimento cinematográfico */}
+          {isMobile ? (
+            <div style={{ display: "flex", gap: "0.08em" }}>
+              {letters.map((letter, i) => (
+                <motion.span
+                  key={letter + i}
+                  initial={{ opacity: 0, y: 15, filter: "blur(8px)", scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
+                  transition={{
+                    duration: 1.4,
+                    delay: 0.6 + i * 0.2,
+                    ease: [0.19, 1, 0.22, 1],
+                  }}
+                  style={{
+                    fontFamily: "var(--font-cormorant)",
+                    fontSize: "clamp(2.6rem, 11vw, 4.2rem)",
+                    fontWeight: 300,
+                    letterSpacing: "0.18em",
+                    lineHeight: 1,
+                    color: "rgba(184, 151, 90, 0.98)",
+                    display: "inline-block",
+                    textShadow: "0 0 20px rgba(184,151,90,0.15)",
+                  }}
+                >
+                  {letter}
+                </motion.span>
+              ))}
+            </div>
+          ) : (
+            <motion.span
+              initial={{ opacity: 0, y: 12, filter: "blur(10px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ duration: 1.8, delay: 0.8, ease: [0.19, 1, 0.22, 1] }}
+              style={{
+                fontFamily: "var(--font-cormorant)",
+                fontSize: "clamp(3rem, 8vw, 6rem)",
+                fontWeight: 300,
+                letterSpacing: "0.25em",
+                lineHeight: 1,
+                color: "rgba(184, 151, 90, 0.95)",
+              }}
+            >
+              MADU
+            </motion.span>
+          )}
+
+          {/* Subtítulo */}
           <motion.p
             className="text-label"
-            style={{ color: "rgba(240,240,240,0.35)", letterSpacing: "0.35em" }}
+            style={{
+              color: "rgba(240,240,240,0.30)",
+              letterSpacing: "0.3em",
+              fontSize: isMobile ? "0.55rem" : undefined,
+            }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1.4, delay: 1.2, ease: [0.19, 1, 0.22, 1] }}
+            transition={{ duration: 1.4, delay: isMobile ? 1.4 : 1.2, ease: [0.19, 1, 0.22, 1] }}
           >
             beyond static motion
           </motion.p>
-          <div
+
+          {/* Linha decorativa inferior */}
+          <motion.div
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={{ scaleX: 1, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 1.0, ease: [0.19, 1, 0.22, 1] }}
             style={{
-              width: "40px", height: "1px",
-              background: "linear-gradient(90deg, transparent, rgba(184,151,90,0.35), transparent)",
+              width: "28px",
+              height: "1px",
+              background: "linear-gradient(90deg, rgba(184,151,90,0.35), transparent)",
+              transformOrigin: "left",
             }}
           />
         </div>
@@ -143,11 +201,6 @@ export default function HeroScrollSequence() {
         style={{ position: "relative", height: SCROLL_HEIGHT, background: "#000000" }}
         aria-label="Cinematic scroll sequence"
       >
-        {/*
-         * Canvas recebe scrollYProgress RAW como target.
-         * A suavização cinematográfica é feita INTERNAMENTE no rAF loop
-         * via lerp frame-rate independente — isso é a chave para fluidity máxima.
-         */}
         <SequenceCanvas images={images} progress={scrollYProgress} isLoaded={isLoaded} />
       </div>
     </>

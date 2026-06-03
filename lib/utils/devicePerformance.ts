@@ -27,9 +27,11 @@ export function getDevicePerformanceTier(): PerformanceTier {
     );
 
   if (prefersReduced) return "low";
-  if (isMobile && (cores < 4 || memory < 2)) return "low";
+  // Mobile com menos de 4 núcleos ou menos de 3GB → baixo desempenho
+  if (isMobile && (cores < 4 || memory < 3)) return "low";
+  // Mobile com 4+ núcleos e 3GB+ → tier médio (não alto, para preservar bateria)
   if (isMobile) return "medium";
-  if (cores >= 8 && memory >= 4) return "high";
+  if (cores >= 8 && memory >= 6) return "high";
   if (cores >= 4 && memory >= 2) return "medium";
 
   return "low";
@@ -44,9 +46,9 @@ export function getDevicePerformanceTier(): PerformanceTier {
  */
 export function getFrameStep(tier: PerformanceTier): number {
   switch (tier) {
-    case "high":   return 1;
-    case "medium": return 1;
-    case "low":    return 2;
+    case "high":   return 1; // Todos os 122 frames
+    case "medium": return 2; // A cada 2 frames → 61 keyframes (mobile mid-range, tablets)
+    case "low":    return 3; // A cada 3 frames → ~41 keyframes (mobile low-end)
   }
 }
 
@@ -56,7 +58,8 @@ export function getFrameStep(tier: PerformanceTier): number {
  */
 export function getDevicePixelRatio(tier: PerformanceTier): number {
   const dpr = window.devicePixelRatio ?? 1;
-  if (tier === "low") return Math.min(dpr, 1.5);
-  if (tier === "medium") return Math.min(dpr, 2);
-  return Math.min(dpr, 3); // Support up to 3x DPR (true 4k feeling on high-end devices)
+  // DPR reduzido em mobile economiza MUITO em memória de canvas e GPU
+  if (tier === "low")    return Math.min(dpr, 1.0); // 1x máximo — canvas menor, rendering muito mais rápido
+  if (tier === "medium") return Math.min(dpr, 1.5); // 1.5x — balanço qualidade/performance em mobile
+  return Math.min(dpr, 2.5); // Desktop high-end — suporte até 2.5x
 }

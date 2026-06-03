@@ -6,25 +6,35 @@ import Lenis from "lenis";
 /**
  * useLenisScroll
  *
- * Initializes Lenis smooth scroll and keeps it running via rAF.
- * Returns the Lenis instance so consumers can read .scroll, .progress, etc.
+ * Desktop → Lenis smooth scroll com inércia de luxo.
+ * Mobile/Tablet → scroll nativo (mais fluido e eficiente em touch).
  *
- * Config tuned for a luxury, high-inertia feel:
- * - duration: 1.4s — long, silk-smooth deceleration
- * - easing:   exponential ease-out — premium deceleration curve
- * - smoothWheel: true — intercepts native scroll for smooth wheel
+ * A decisão de desativar o Lenis em mobile é intencional:
+ * browsers modernos em touch já fornecem scroll nativo 60/120fps
+ * com momentum próprio. O Lenis adiciona latência extra em touch.
  */
 export function useLenisScroll() {
   const lenisRef = useRef<Lenis | null>(null);
   const rafRef = useRef<number>(0);
 
   useEffect(() => {
+    // Detecta tela de toque — usa scroll nativo para máxima fluidez
+    const isTouchDevice =
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0 ||
+      window.innerWidth < 1024;
+
+    if (isTouchDevice) {
+      // Nenhuma interceptação — scroll nativo do browser
+      return;
+    }
+
+    // Desktop: Lenis com configuração luxury
     const lenis = new Lenis({
-      duration: 1.8, // Mais longo para sensação de peso e luxo
+      duration: 1.6,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      lerp: 0.05,    // Interpolação suave
+      lerp: 0.06,
       smoothWheel: true,
-      touchMultiplier: 1.5,
       infinite: false,
     });
 

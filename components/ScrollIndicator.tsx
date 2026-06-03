@@ -8,7 +8,8 @@ interface ScrollIndicatorProps {
 
 /**
  * ScrollIndicator
- * Elegant animated scroll prompt — fades out once user starts scrolling.
+ * Elegant animated scroll prompt — inline styles only (sem Tailwind)
+ * para garantir centralização perfeita em qualquer dispositivo.
  */
 export default function ScrollIndicator({ visible }: ScrollIndicatorProps) {
   return (
@@ -16,8 +17,19 @@ export default function ScrollIndicator({ visible }: ScrollIndicatorProps) {
       {visible && (
         <motion.div
           key="scroll-indicator"
-          className="fixed bottom-10 left-1/2 z-50 flex flex-col items-center gap-3"
-          style={{ transform: "translateX(-50%)" }}
+          style={{
+            position: "fixed",
+            bottom: "40px",
+            left: 0,
+            right: 0,
+            zIndex: 50,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "12px",
+            pointerEvents: "none",
+          }}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 10 }}
@@ -26,26 +38,32 @@ export default function ScrollIndicator({ visible }: ScrollIndicatorProps) {
         >
           {/* Label */}
           <span
-            className="text-label"
-            style={{ color: "rgba(184,151,90,0.55)", letterSpacing: "0.35em" }}
+            style={{
+              fontFamily: "var(--font-inter)",
+              fontSize: "0.6875rem",
+              fontWeight: 400,
+              letterSpacing: "0.35em",
+              textTransform: "uppercase",
+              color: "rgba(184,151,90,0.55)",
+              whiteSpace: "nowrap",
+            }}
           >
             scroll
           </span>
 
-          {/* Animated line with dot */}
-          <div className="flex flex-col items-center gap-1">
-            <motion.div
+          {/* Linha + dot animado */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
+            <div
               style={{
-                width: 1,
-                height: 32,
-                background:
-                  "linear-gradient(to bottom, transparent, rgba(184,151,90,0.5))",
+                width: "1px",
+                height: "32px",
+                background: "linear-gradient(to bottom, transparent, rgba(184,151,90,0.5))",
               }}
             />
             <motion.div
               style={{
-                width: 4,
-                height: 4,
+                width: "4px",
+                height: "4px",
                 borderRadius: "50%",
                 background: "rgba(184,151,90,0.6)",
               }}

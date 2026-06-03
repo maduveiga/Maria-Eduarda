@@ -11,6 +11,15 @@ interface HeroTextLayersProps {
 export default function HeroTextLayers({ progress, rawProgress }: HeroTextLayersProps) {
   const [isReady, setIsReady] = useState(false);
   const [isValidSection, setIsValidSection] = useState(true);
+  const [isMobileTablet, setIsMobileTablet] = useState(false);
+
+  // Detecta mobile/tablet para layout alternativo
+  useEffect(() => {
+    const check = () => setIsMobileTablet(window.innerWidth < 1024);
+    check();
+    window.addEventListener("resize", check, { passive: true });
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   // Hard clamp para garantir que não vai renderizar fora de hora
   useMotionValueEvent(rawProgress, "change", (latest) => {
@@ -29,28 +38,26 @@ export default function HeroTextLayers({ progress, rawProgress }: HeroTextLayers
   }, []);
 
   // ── WRAPPER — apaga tudo ao fim do hero de forma contida ─────────────────────────
-  // Desaparece por completo antes de 100% para não invadir a seção abaixo
   const wrapperOpacity = useTransform(progress, [0.93, 0.98], [1, 0]);
 
-  // ── TEXTO 1 (ESQUERDO) ────────────────────────────────────────────
+  // ── TEXTO 1 ────────────────────────────────────────────────────────
   const t1Opacity = useTransform(progress, [0.015, 0.05, 0.15, 0.18], [0, 1, 1, 0]);
   const t1Y = useTransform(progress, [0.015, 0.18], [60, -60]);
 
-  // ── TEXTO 2 (DIREITO - Tempo de leitura expandido!) ─────────────────────────────────────────────
-  // O texto mais longo do hero; agora fica estável por quase 30% do scroll inteiro
+  // ── TEXTO 2 ─────────────────────────────────────────────────────────
   const t2Opacity = useTransform(progress, [0.22, 0.28, 0.55, 0.60], [0, 1, 1, 0]);
   const t2Y = useTransform(progress, [0.22, 0.60], [60, -60]);
 
-  // ── TEXTO 3 (DIREITO) ─────────────────────────────────────────────
+  // ── TEXTO 3 ─────────────────────────────────────────────────────────
   const t3Opacity = useTransform(progress, [0.65, 0.70, 0.82, 0.85], [0, 1, 1, 0]);
   const t3Y = useTransform(progress, [0.65, 0.85], [60, -60]);
 
-  // ── TEXTO 4 (DIREITO) — Evapora elegantemente ────────────────────
+  // ── TEXTO 4 ─────────────────────────────────────────────────────────
   const t4Opacity = useTransform(progress, [0.88, 0.92, 0.95, 0.98], [0, 1, 1, 0]);
   const t4Y = useTransform(progress, [0.88, 0.98], [60, -40]);
 
-  // ── Estilos base ──────────────────────────────────────────────────
-  const rightLayerStyle: React.CSSProperties = {
+  // ── Estilos DESKTOP (inalterados) ──────────────────────────────────
+  const rightLayerStyleDesktop: React.CSSProperties = {
     position: "absolute",
     right: "clamp(20px, 5vw, 72px)",
     top: "50%",
@@ -63,7 +70,7 @@ export default function HeroTextLayers({ progress, rawProgress }: HeroTextLayers
     textAlign: "left",
   };
 
-  const leftLayerStyle: React.CSSProperties = {
+  const leftLayerStyleDesktop: React.CSSProperties = {
     position: "absolute",
     left: "clamp(20px, 5vw, 72px)",
     top: "50%",
@@ -76,12 +83,41 @@ export default function HeroTextLayers({ progress, rawProgress }: HeroTextLayers
     textAlign: "left",
   };
 
+  // ── Estilos MOBILE/TABLET — textos nas áreas escuras (letterbox) ───
+  // A imagem da ampulheta em mobile é mais alta que larga (portrait),
+  // então o canvas cria letterbox nas laterais (pretas).
+  // Posicionamos os textos na zona escura INFERIOR (sob a ampulheta).
+  const mobileTextStyle: React.CSSProperties = {
+    position: "absolute",
+    left: "50%",
+    transform: "translateX(-50%)",
+    width: "90vw",
+    maxWidth: "380px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "8px",
+    pointerEvents: "none",
+    textAlign: "center",
+    // Zona escura inferior — após o final da imagem (~82% da altura da tela em portrait)
+    bottom: "clamp(24px, 6vh, 60px)",
+  };
+
+  // Para o texto 1 usamos zona SUPERIOR (acima da ampulheta)
+  const mobileTextTopStyle: React.CSSProperties = {
+    ...mobileTextStyle,
+    bottom: "auto",
+    top: "clamp(24px, 5vh, 50px)",
+  };
+
+  // ── Tipografia ──────────────────────────────────────────────────────
   const titleStyle: React.CSSProperties = {
     fontFamily: "var(--font-cormorant)",
-    fontSize: "clamp(1.6rem, 2.8vw, 2.4rem)",
+    fontSize: isMobileTablet
+      ? "clamp(1.25rem, 4.5vw, 1.8rem)"
+      : "clamp(1.6rem, 2.8vw, 2.4rem)",
     fontWeight: 300,
     color: "rgba(240, 240, 240, 0.92)",
-    lineHeight: 1.15,
+    lineHeight: 1.2,
     fontStyle: "italic",
     letterSpacing: "0.01em",
     margin: 0,
@@ -89,8 +125,8 @@ export default function HeroTextLayers({ progress, rawProgress }: HeroTextLayers
 
   const enStyle: React.CSSProperties = {
     fontFamily: "var(--font-inter)",
-    fontSize: "clamp(0.65rem, 0.9vw, 0.78rem)",
-    color: "rgba(240, 240, 240, 0.25)",
+    fontSize: isMobileTablet ? "0.6rem" : "clamp(0.65rem, 0.9vw, 0.78rem)",
+    color: "rgba(240, 240, 240, 0.22)",
     lineHeight: 1.5,
     fontStyle: "italic",
     fontWeight: 300,
@@ -101,33 +137,39 @@ export default function HeroTextLayers({ progress, rawProgress }: HeroTextLayers
 
   const pStyle: React.CSSProperties = {
     fontFamily: "var(--font-cormorant)",
-    fontSize: "clamp(1.23rem, 1.57vw, 1.45rem)", // +7% adicionais no tamanho da tipografia
-    color: "rgba(240, 240, 240, 0.75)", // Um toque a mais de brilho para facilitar a leitura
+    fontSize: isMobileTablet
+      ? "clamp(1.05rem, 3.5vw, 1.4rem)"
+      : "clamp(1.23rem, 1.57vw, 1.45rem)",
+    color: "rgba(240, 240, 240, 0.78)",
     lineHeight: 1.4,
     fontWeight: 300,
-    fontStyle: "italic", // Replicando o visual do texto inicial
+    fontStyle: "italic",
     letterSpacing: "0.02em",
     margin: 0,
   };
 
   const pEnStyle: React.CSSProperties = {
     fontFamily: "var(--font-inter)",
-    fontSize: "clamp(0.68rem, 0.85vw, 0.78rem)",
-    color: "rgba(240, 240, 240, 0.22)",
+    fontSize: isMobileTablet ? "0.58rem" : "clamp(0.68rem, 0.85vw, 0.78rem)",
+    color: "rgba(240, 240, 240, 0.18)",
     lineHeight: 1.55,
     fontStyle: "italic",
     fontWeight: 300,
     margin: 0,
-    marginTop: "6px",
+    marginTop: "4px",
   };
 
   const gold = "rgba(184, 151, 90, 0.85)";
   const divider: React.CSSProperties = {
-    width: "32px",
+    width: "28px",
     height: "1px",
     background: "rgba(184,151,90,0.35)",
-    margin: "4px 0",
+    margin: isMobileTablet ? "2px auto" : "4px 0",
   };
+
+  // ── Seleciona o estilo correto com base no dispositivo ───────────────
+  const rightLayerStyle = isMobileTablet ? mobileTextStyle : rightLayerStyleDesktop;
+  const leftLayerStyle  = isMobileTablet ? mobileTextTopStyle : leftLayerStyleDesktop;
 
   return (
     <motion.div 
@@ -142,19 +184,19 @@ export default function HeroTextLayers({ progress, rawProgress }: HeroTextLayers
       }}
     >
 
-      {/* ── TEXTO 1 — LADO ESQUERDO ────────────────────────────── */}
+      {/* ── TEXTO 1 — TOPO (mobile) / LADO ESQUERDO (desktop) ─────── */}
       <motion.div style={{ ...leftLayerStyle, opacity: t1Opacity, y: t1Y }}>
         <div style={divider} />
         <h2 style={titleStyle}>
           Marcas memoráveis sobrevivem ao tempo.
-          <br />As comuns apenas passam.
+          {isMobileTablet ? " " : <br />}As comuns apenas passam.
         </h2>
         <p style={enStyle}>
           memorable brands survive time. ordinary ones simply fade.
         </p>
       </motion.div>
 
-      {/* ── TEXTO 2 — LADO DIREITO ─────────────────────────────── */}
+      {/* ── TEXTO 2 — PARTE INFERIOR (mobile) / LADO DIREITO (desktop) */}
       <motion.div style={{ ...rightLayerStyle, opacity: t2Opacity, y: t2Y }}>
         <div style={divider} />
         <p style={pStyle}>
@@ -167,7 +209,7 @@ export default function HeroTextLayers({ progress, rawProgress }: HeroTextLayers
         </p>
       </motion.div>
 
-      {/* ── TEXTO 3 — LADO DIREITO ─────────────────────────────── */}
+      {/* ── TEXTO 3 — PARTE INFERIOR (mobile) / LADO DIREITO (desktop) */}
       <motion.div style={{ ...rightLayerStyle, opacity: t3Opacity, y: t3Y }}>
         <div style={divider} />
         <h2 style={{ ...titleStyle, color: gold }}>
@@ -178,7 +220,7 @@ export default function HeroTextLayers({ progress, rawProgress }: HeroTextLayers
         </p>
       </motion.div>
 
-      {/* ── TEXTO 4 — LADO DIREITO ─────────────────────────────── */}
+      {/* ── TEXTO 4 — PARTE INFERIOR (mobile) / LADO DIREITO (desktop) */}
       <motion.div style={{ ...rightLayerStyle, opacity: t4Opacity, y: t4Y }}>
         <div style={divider} />
         <h2 style={titleStyle}>

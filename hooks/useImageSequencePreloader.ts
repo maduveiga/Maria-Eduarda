@@ -16,13 +16,13 @@ export interface PreloaderState {
 
 /**
  * useImageSequencePreloader
- * Preloads all frames from the sequence folder into memory.
- * Returns the image array, loading progress, and ready state.
  *
- * Strategy:
- * - Priority-loads first 10 frames immediately (for instant first-frame display)
- * - Then loads remaining frames in parallel batches
- * - Caches all images in a ref to avoid garbage collection
+ * Estratégia de carregamento em duas fases:
+ * 1. Fase Prioritária — primeiros 6 frames carregam IMEDIATAMENTE
+ *    → o usuário vê o primeiro frame em < 500ms mesmo em mobile lento
+ * 2. Fase Principal — restante carrega em batches adaptativos
+ *    → mobile: batches menores (10 req paralelas) para não saturar a rede
+ *    → desktop: batches maiores (25 req paralelas) para velocidade máxima
  */
 export function useImageSequencePreloader(
   folder = "/sequenciahero",
@@ -40,7 +40,11 @@ export function useImageSequencePreloader(
     const tier = getDevicePerformanceTier();
     const step = getFrameStep(tier);
 
-    // Build list of frame indices to load (respecting step for low-tier devices)
+    // Tamanho de batch adaptativo — mobile usa menos conexões paralelas
+    const isMobile = window.innerWidth < 1024;
+    const BATCH_SIZE = isMobile ? 10 : 25;
+
+    // Build lista de índices respeitando o step do dispositivo
     const indices: number[] = [];
     for (let i = 0; i < totalFrames; i += step) {
       indices.push(i);
@@ -49,7 +53,6 @@ export function useImageSequencePreloader(
     const total = indices.length;
     let loaded = 0;
 
-    // Pre-allocate array
     const images = new Array<HTMLImageElement>(totalFrames);
 
     const loadOne = (index: number): Promise<void> =>
@@ -60,12 +63,12 @@ export function useImageSequencePreloader(
 
         const onFinish = () => {
           images[index] = img;
-          if (step === 2 && index + 1 < totalFrames) {
-            images[index + 1] = img;
+          // Preenche frames intermediários (para step > 1)
+          for (let s = 1; s < step && index + s < totalFrames; s++) {
+            images[index + s] = img;
           }
           loaded++;
-          const progress = loaded / total;
-          setState((prev) => ({ ...prev, progress }));
+          setState((prev) => ({ ...prev, progress: loaded / total }));
           resolve();
         };
 
@@ -73,12 +76,21 @@ export function useImageSequencePreloader(
         img.onerror = onFinish;
       });
 
-    // Load in fast, dense parallel batches without artificial delays to hit 100% ASAP
-    const BATCH_SIZE = 30; // Max parallel connections
-    for (let i = 0; i < total; i += BATCH_SIZE) {
-      const batch = indices.slice(i, i + BATCH_SIZE);
+    // ── FASE 1: Prioridade — primeiros 6 frames (aparece rápido na tela) ──
+    const PRIORITY_COUNT = Math.min(6, indices.length);
+    const priorityIndices = indices.slice(0, PRIORITY_COUNT);
+    await Promise.all(priorityIndices.map(loadOne));
+    imagesRef.current = [...images];
+
+    // Disponibiliza os primeiros frames imediatamente (ainda não "isLoaded")
+    setState((prev) => ({ ...prev, images: [...images] }));
+
+    // ── FASE 2: Restante em batches adaptativos ────────────────────────
+    const remainingIndices = indices.slice(PRIORITY_COUNT);
+    for (let i = 0; i < remainingIndices.length; i += BATCH_SIZE) {
+      const batch = remainingIndices.slice(i, i + BATCH_SIZE);
       await Promise.all(batch.map(loadOne));
-      imagesRef.current = [...images]; 
+      imagesRef.current = [...images];
     }
 
     setState({
